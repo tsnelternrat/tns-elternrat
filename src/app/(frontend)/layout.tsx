@@ -40,13 +40,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                     <Link href={n.href}>{n.label}</Link>
                   </li>
                 ))}
-                <li>
-                  <Link href="/elternbox" className="knopf knopf-klein">
-                    Elternbox
-                  </Link>
-                </li>
               </ul>
             </nav>
+            <Link href="/elternbox" className="knopf knopf-klein kopf-knopf">
+              Elternbox
+            </Link>
           </div>
         </header>
         <main id="inhalt" className="breite">

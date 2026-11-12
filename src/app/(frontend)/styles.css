@@ -152,9 +152,12 @@ a:hover {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: space-between;
   gap: 0.5rem 1.5rem;
   padding-block: 0.75rem;
+}
+
+.kopf nav {
+  margin-left: auto;
 }
 
 .kopf-logo {
@@ -642,6 +645,114 @@ figcaption {
   display: flex;
   flex-wrap: wrap;
   gap: 0.4rem 1.4rem;
+}
+
+/* Handy */
+@media (max-width: 40rem) {
+  :root {
+    --schatten: 4px 4px 0 var(--salbei);
+  }
+
+  html {
+    font-size: 100%;
+  }
+
+  main {
+    padding-block: 1.5rem 3rem;
+  }
+
+  main > section,
+  .jahrgang {
+    margin-top: 2.5rem;
+  }
+
+  /* Kopf: Logo und Elternbox oben, Menü als eigene Zeile darunter */
+  .kopf-innen {
+    padding-block: 0.6rem 0;
+    row-gap: 0.4rem;
+  }
+
+  .logo {
+    width: 8.5rem;
+  }
+
+  .kopf-knopf {
+    order: 1;
+    margin-left: auto;
+  }
+
+  .kopf nav {
+    order: 2;
+    flex-basis: 100%;
+    margin-left: 0;
+    border-top: 1px solid #d9d4c7;
+  }
+
+  .kopf nav ul {
+    justify-content: space-between;
+    gap: 0;
+  }
+
+  .kopf nav a:not(.knopf) {
+    display: block;
+    padding-block: 0.65rem 0.5rem;
+  }
+
+  .gross {
+    font-size: 1.05rem;
+  }
+
+  .buehne {
+    gap: 1.5rem;
+    padding-block: 0.5rem 0;
+  }
+
+  .knoepfe {
+    gap: 0.75rem;
+    margin-top: 1.25rem;
+  }
+
+  .knoepfe .knopf {
+    flex: 1 1 auto;
+    text-align: center;
+  }
+
+  .karten {
+    gap: 1.25rem;
+  }
+
+  .karten-zwei {
+    margin-top: 1.5rem;
+  }
+
+  .karte {
+    padding: 1.1rem 1.15rem 1.25rem;
+  }
+
+  .spalten {
+    gap: 1.75rem;
+  }
+
+  .download {
+    padding: 0.65rem 0.85rem;
+  }
+
+  .galerie {
+    gap: 0.5rem;
+    grid-template-columns: repeat(auto-fill, minmax(6.5rem, 1fr));
+  }
+
+  .hinweis {
+    margin-top: 2rem;
+  }
+
+  .fuss {
+    padding-block: 2.25rem;
+  }
+
+  .fuss-innen {
+    gap: 1.75rem;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

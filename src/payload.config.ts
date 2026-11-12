@@ -33,7 +33,8 @@ export default buildConfig({
     meta: { titleSuffix: ' · Elternrat TSN' },
   },
   i18n: { supportedLanguages: { de }, fallbackLanguage: 'de' },
-  collections: [Arbeitsgruppen, Protokolle, Bulletins, Galerien, Nachrichten, Media, Dokumente, Users],
+  // Die Reihenfolge hier bestimmt die Reihenfolge der Gruppen im Admin-Menü.
+  collections: [Nachrichten, Arbeitsgruppen, Protokolle, Bulletins, Galerien, Media, Dokumente, Users],
   globals: [Startseite, Elternrat, Texte],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',

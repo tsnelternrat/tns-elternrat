@@ -67,11 +67,11 @@ export interface Config {
   };
   blocks: {};
   collections: {
+    nachrichten: Nachrichten;
     arbeitsgruppen: Arbeitsgruppen;
     protokolle: Protokolle;
     bulletins: Bulletin;
     galerien: Galerien;
-    nachrichten: Nachrichten;
     media: Media;
     dokumente: Dokumente;
     users: User;
@@ -82,11 +82,11 @@ export interface Config {
   };
   collectionsJoins: {};
   collectionsSelect: {
+    nachrichten: NachrichtenSelect<false> | NachrichtenSelect<true>;
     arbeitsgruppen: ArbeitsgruppenSelect<false> | ArbeitsgruppenSelect<true>;
     protokolle: ProtokolleSelect<false> | ProtokolleSelect<true>;
     bulletins: BulletinsSelect<false> | BulletinsSelect<true>;
     galerien: GalerienSelect<false> | GalerienSelect<true>;
-    nachrichten: NachrichtenSelect<false> | NachrichtenSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     dokumente: DokumenteSelect<false> | DokumenteSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
@@ -136,6 +136,22 @@ export interface UserAuthOperations {
     email: string;
     password: string;
   };
+}
+/**
+ * Nachrichten, die Eltern über die Elternbox geschickt haben.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "nachrichten".
+ */
+export interface Nachrichten {
+  id: number;
+  nachricht: string;
+  name?: string | null;
+  email?: string | null;
+  vorschau?: string | null;
+  erledigt?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -348,22 +364,6 @@ export interface Galerien {
   createdAt: string;
 }
 /**
- * Nachrichten, die Eltern über die Elternbox geschickt haben.
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "nachrichten".
- */
-export interface Nachrichten {
-  id: number;
-  nachricht: string;
-  name?: string | null;
-  email?: string | null;
-  vorschau?: string | null;
-  erledigt?: boolean | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
@@ -415,6 +415,10 @@ export interface PayloadLockedDocument {
   id: number;
   document?:
     | ({
+        relationTo: 'nachrichten';
+        value: number | Nachrichten;
+      } | null)
+    | ({
         relationTo: 'arbeitsgruppen';
         value: number | Arbeitsgruppen;
       } | null)
@@ -429,10 +433,6 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'galerien';
         value: number | Galerien;
-      } | null)
-    | ({
-        relationTo: 'nachrichten';
-        value: number | Nachrichten;
       } | null)
     | ({
         relationTo: 'media';
@@ -487,6 +487,19 @@ export interface PayloadMigration {
   batch?: number | null;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "nachrichten_select".
+ */
+export interface NachrichtenSelect<T extends boolean = true> {
+  nachricht?: T;
+  name?: T;
+  email?: T;
+  vorschau?: T;
+  erledigt?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -563,19 +576,6 @@ export interface GalerienSelect<T extends boolean = true> {
   datum?: T;
   bilder?: T;
   slug?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "nachrichten_select".
- */
-export interface NachrichtenSelect<T extends boolean = true> {
-  nachricht?: T;
-  name?: T;
-  email?: T;
-  vorschau?: T;
-  erledigt?: T;
   updatedAt?: T;
   createdAt?: T;
 }

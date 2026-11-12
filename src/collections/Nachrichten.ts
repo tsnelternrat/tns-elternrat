@@ -8,7 +8,7 @@ import { adressen } from '../globals/Texte'
  */
 export const Nachrichten: CollectionConfig = {
   slug: 'nachrichten',
-  labels: { singular: 'Nachricht', plural: 'Elternbox' },
+  labels: { singular: 'Nachricht', plural: 'Nachrichten' },
   admin: {
     useAsTitle: 'vorschau',
     group: 'Elternbox',

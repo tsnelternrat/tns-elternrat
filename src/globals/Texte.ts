@@ -11,7 +11,7 @@ export const adressen = (wert: unknown): string[] =>
 export const Texte: GlobalConfig = {
   slug: 'texte',
   label: 'Texte und Einstellungen',
-  admin: { group: 'Inhalte' },
+  admin: { group: 'Einstellungen' },
   access: { read: () => true },
   hooks: { afterChange: [revalidateGlobal] },
   fields: [
