@@ -1,5 +1,6 @@
 import type { Field } from 'payload'
 
+import { icons } from './icons'
 import { istSchuljahr, schuljahrVon } from './schuljahr'
 import { slugify } from './slug'
 
@@ -34,3 +35,23 @@ export const slugField = (quelle: string): Field => ({
     ],
   },
 })
+
+/** Bild und Icon für die Teaser-Karte: Das Bild hat Vorrang, sonst erscheint das Icon. */
+export const teaserFelder: Field[] = [
+  {
+    name: 'bild',
+    type: 'upload',
+    relationTo: 'media',
+    label: 'Bild für die Übersicht',
+    admin: { description: 'Optional. Ohne Bild erscheint das gewählte Icon.' },
+  },
+  {
+    name: 'icon',
+    type: 'select',
+    label: 'Icon',
+    required: true,
+    defaultValue: 'gruppe',
+    options: icons.map((i) => ({ ...i })),
+    admin: { description: 'Erscheint auf der Übersicht, solange kein Bild gewählt ist.' },
+  },
+]

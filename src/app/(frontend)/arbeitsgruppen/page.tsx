@@ -1,8 +1,10 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 
+import { TeaserKopf } from '@/components/Icon'
 import { Text } from '@/components/Text'
-import { hatDetailseite, payloadClient } from '@/lib/data'
+import { alsDokument, hatDetailseite, payloadClient } from '@/lib/data'
+import type { Media } from '@/payload-types'
 
 export const revalidate = 3600
 export const metadata: Metadata = { title: 'Arbeitsgruppen' }
@@ -11,7 +13,7 @@ export default async function ArbeitsgruppenSeite() {
   const payload = await payloadClient()
   const [texte, ags] = await Promise.all([
     payload.findGlobal({ slug: 'texte', depth: 0 }),
-    payload.find({ collection: 'arbeitsgruppen', sort: 'reihenfolge', limit: 100, depth: 0 }),
+    payload.find({ collection: 'arbeitsgruppen', sort: 'reihenfolge', limit: 100, depth: 1 }),
   ])
 
   return (
@@ -21,6 +23,7 @@ export default async function ArbeitsgruppenSeite() {
       <div className="karten karten-zwei">
         {ags.docs.map((ag) => (
           <article className="karte" key={ag.id} id={ag.slug ?? undefined}>
+            <TeaserKopf bild={alsDokument<Media>(ag.bild)} icon={ag.icon} />
             <h2>{ag.name}</h2>
             <Text inhalt={ag.beschreibung} />
             {hatDetailseite(ag) && <Link href={`/arbeitsgruppen/${ag.slug}`}>Mehr erfahren</Link>}

@@ -163,6 +163,30 @@ export interface Arbeitsgruppen {
     [k: string]: unknown;
   };
   /**
+   * Optional. Ohne Bild erscheint das gewählte Icon.
+   */
+  bild?: (number | null) | Media;
+  /**
+   * Erscheint auf der Übersicht, solange kein Bild gewählt ist.
+   */
+  icon:
+    | 'gruppe'
+    | 'sprechblase'
+    | 'dokument'
+    | 'heft'
+    | 'foto'
+    | 'video'
+    | 'audio'
+    | 'kalender'
+    | 'kaffee'
+    | 'sonne'
+    | 'verkehr'
+    | 'bildung'
+    | 'welt'
+    | 'apfel'
+    | 'lupe'
+    | 'herz';
+  /**
    * Optional, zum Beispiel eine Charta oder ein Merkblatt. Sobald hier, bei Dokumenten oder Videos etwas steht, bekommt die Arbeitsgruppe eine eigene Seite.
    */
   details?: {
@@ -198,6 +222,47 @@ export interface Arbeitsgruppen {
   slug?: string | null;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media".
+ */
+export interface Media {
+  id: number;
+  /**
+   * Kurze Beschreibung für Menschen, die das Bild nicht sehen können.
+   */
+  alt?: string | null;
+  _objectKey?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+  sizes?: {
+    thumb?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    mittel?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+  };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -278,47 +343,6 @@ export interface Bulletin {
   height?: number | null;
   focalX?: number | null;
   focalY?: number | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "media".
- */
-export interface Media {
-  id: number;
-  /**
-   * Kurze Beschreibung für Menschen, die das Bild nicht sehen können.
-   */
-  alt?: string | null;
-  _objectKey?: string | null;
-  updatedAt: string;
-  createdAt: string;
-  url?: string | null;
-  thumbnailURL?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-  focalX?: number | null;
-  focalY?: number | null;
-  sizes?: {
-    thumb?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-    mittel?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-  };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -487,6 +511,8 @@ export interface PayloadMigration {
 export interface ArbeitsgruppenSelect<T extends boolean = true> {
   name?: T;
   beschreibung?: T;
+  bild?: T;
+  icon?: T;
   details?: T;
   dokumente?: T;
   videos?:

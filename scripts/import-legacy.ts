@@ -13,6 +13,7 @@ import path from 'path'
 import { getPayload, type RequiredDataFromCollectionSlug } from 'payload'
 import { fileURLToPath } from 'url'
 
+import type { IconName } from '../src/lib/icons'
 import { schuljahrVon } from '../src/lib/schuljahr'
 import config from '../src/payload.config'
 
@@ -200,20 +201,21 @@ async function main() {
   }
 
   // ---------------------------------------------------------------- Arbeitsgruppen
-  const ags: { name: string; quelle: string }[] = [
-    { name: 'AG Bulletin', quelle: 'arbeitsgruppen/ag-bulletin' },
-    { name: 'AG Elternkontaktgremium', quelle: 'arbeitsgruppen/ag-elternmitwirkung-auf-stadt-und-schulkreisebene' },
-    { name: 'AG Kafi im Gang', quelle: 'arbeitsgruppen/ag-kafi-im-gang' },
-    { name: 'AG Sommerabend', quelle: 'arbeitsgruppen/ag-sommerabend' },
-    { name: 'AG Verkehr', quelle: 'arbeitsgruppen/ag-verkehr' },
-    { name: 'AG Elternbildung', quelle: 'arbeitsgruppen/ag-weiterbildung' },
-    { name: 'AG Kulturbrücke', quelle: 'arbeitsgruppen/ag-kulturbruecke' },
-    { name: 'AG Klassenznüni', quelle: 'arbeitsgruppen/ag-klassenznueni' },
+  const ags: { name: string; icon: IconName; quelle: string }[] = [
+    { name: 'AG Bulletin', icon: 'heft', quelle: 'arbeitsgruppen/ag-bulletin' },
+    { name: 'AG Elternkontaktgremium', icon: 'sprechblase', quelle: 'arbeitsgruppen/ag-elternmitwirkung-auf-stadt-und-schulkreisebene' },
+    { name: 'AG Kafi im Gang', icon: 'kaffee', quelle: 'arbeitsgruppen/ag-kafi-im-gang' },
+    { name: 'AG Sommerabend', icon: 'sonne', quelle: 'arbeitsgruppen/ag-sommerabend' },
+    { name: 'AG Verkehr', icon: 'verkehr', quelle: 'arbeitsgruppen/ag-verkehr' },
+    { name: 'AG Elternbildung', icon: 'bildung', quelle: 'arbeitsgruppen/ag-weiterbildung' },
+    { name: 'AG Kulturbrücke', icon: 'welt', quelle: 'arbeitsgruppen/ag-kulturbruecke' },
+    { name: 'AG Klassenznüni', icon: 'apfel', quelle: 'arbeitsgruppen/ag-klassenznueni' },
   ]
   let reihenfolge = 10
   for (const ag of ags) {
     const daten: RequiredDataFromCollectionSlug<'arbeitsgruppen'> = {
       name: ag.name,
+      icon: ag.icon,
       beschreibung: lexical(bereinige(seite(ag.quelle)))!,
       reihenfolge,
     }
@@ -247,6 +249,7 @@ async function main() {
       collection: 'arbeitsgruppen',
       data: {
         name: 'AG Läuse',
+        icon: 'lupe',
         beschreibung: lexical(beschreibung)!,
         details: lexical(teile.body.innerHTML.replace(/<\/?div[^>]*>/g, '')),
         dokumente,
