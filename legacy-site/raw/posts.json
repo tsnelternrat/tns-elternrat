@@ -1,0 +1,249 @@
+[
+  {
+    "id": 981,
+    "date": "2022-06-30T13:52:13",
+    "date_gmt": "2022-06-30T13:52:13",
+    "guid": {
+      "rendered": "http://tsn-elternrat.ch/?p=981"
+    },
+    "modified": "2026-05-27T10:40:32",
+    "modified_gmt": "2026-05-27T10:40:32",
+    "slug": "bulletin",
+    "status": "publish",
+    "type": "post",
+    "link": "https://tsn-elternrat.ch/bulletin/",
+    "title": {
+      "rendered": "Das aktuelle Bulletin des Elternrates"
+    },
+    "content": {
+      "rendered": "\n<p class=\"wp-block-paragraph\"><a href=\"http://tsn-elternrat.ch/wp-content/uploads/2026/05/260511_TSNBulletin_Fruehling26_WEB_smileys.pdf\">Das neue Bulletin hier herunterladen</a></p>\n\n\n\n<figure class=\"wp-block-image size-large is-resized\"><img loading=\"lazy\" decoding=\"async\" width=\"700\" height=\"933\" src=\"https://tsn-elternrat.ch/wp-content/uploads/2022/06/image-20260517-183117-007-700x933.jpeg\" alt=\"\" class=\"wp-image-1352\" style=\"width:584px;height:auto\" srcset=\"https://tsn-elternrat.ch/wp-content/uploads/2022/06/image-20260517-183117-007-700x933.jpeg 700w, https://tsn-elternrat.ch/wp-content/uploads/2022/06/image-20260517-183117-007-225x300.jpeg 225w, https://tsn-elternrat.ch/wp-content/uploads/2022/06/image-20260517-183117-007-768x1024.jpeg 768w, https://tsn-elternrat.ch/wp-content/uploads/2022/06/image-20260517-183117-007-1152x1536.jpeg 1152w, https://tsn-elternrat.ch/wp-content/uploads/2022/06/image-20260517-183117-007.jpeg 1200w\" sizes=\"auto, (max-width: 700px) 100vw, 700px\" /></figure>\n\n\n\n<p class=\"wp-block-paragraph\"></p>\n\n\n\n<p class=\"wp-block-paragraph\"></p>\n",
+      "protected": false
+    },
+    "excerpt": {
+      "rendered": "<p>Das neue Bulletin hier herunterladen</p>\n",
+      "protected": false
+    },
+    "author": 2,
+    "featured_media": 1352,
+    "comment_status": "closed",
+    "ping_status": "closed",
+    "sticky": false,
+    "template": "",
+    "format": "standard",
+    "meta": {
+      "footnotes": ""
+    },
+    "categories": [
+      4
+    ],
+    "tags": [],
+    "class_list": [
+      "post-981",
+      "post",
+      "type-post",
+      "status-publish",
+      "format-standard",
+      "has-post-thumbnail",
+      "hentry",
+      "category-news",
+      "wpbf-post"
+    ],
+    "post_mailing_queue_ids": [],
+    "_links": {
+      "self": [
+        {
+          "href": "https://tsn-elternrat.ch/wp-json/wp/v2/posts/981",
+          "targetHints": {
+            "allow": [
+              "GET"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://tsn-elternrat.ch/wp-json/wp/v2/posts"
+        }
+      ],
+      "about": [
+        {
+          "href": "https://tsn-elternrat.ch/wp-json/wp/v2/types/post"
+        }
+      ],
+      "author": [
+        {
+          "embeddable": true,
+          "href": "https://tsn-elternrat.ch/wp-json/wp/v2/users/2"
+        }
+      ],
+      "replies": [
+        {
+          "embeddable": true,
+          "href": "https://tsn-elternrat.ch/wp-json/wp/v2/comments?post=981"
+        }
+      ],
+      "version-history": [
+        {
+          "count": 24,
+          "href": "https://tsn-elternrat.ch/wp-json/wp/v2/posts/981/revisions"
+        }
+      ],
+      "predecessor-version": [
+        {
+          "id": 1365,
+          "href": "https://tsn-elternrat.ch/wp-json/wp/v2/posts/981/revisions/1365"
+        }
+      ],
+      "wp:featuredmedia": [
+        {
+          "embeddable": true,
+          "href": "https://tsn-elternrat.ch/wp-json/wp/v2/media/1352"
+        }
+      ],
+      "wp:attachment": [
+        {
+          "href": "https://tsn-elternrat.ch/wp-json/wp/v2/media?parent=981"
+        }
+      ],
+      "wp:term": [
+        {
+          "taxonomy": "category",
+          "embeddable": true,
+          "href": "https://tsn-elternrat.ch/wp-json/wp/v2/categories?post=981"
+        },
+        {
+          "taxonomy": "post_tag",
+          "embeddable": true,
+          "href": "https://tsn-elternrat.ch/wp-json/wp/v2/tags?post=981"
+        }
+      ],
+      "curies": [
+        {
+          "name": "wp",
+          "href": "https://api.w.org/{rel}",
+          "templated": true
+        }
+      ]
+    }
+  },
+  {
+    "id": 988,
+    "date": "2022-06-29T13:59:36",
+    "date_gmt": "2022-06-29T13:59:36",
+    "guid": {
+      "rendered": "http://tsn-elternrat.ch/?p=988"
+    },
+    "modified": "2026-06-09T08:15:31",
+    "modified_gmt": "2026-06-09T08:15:31",
+    "slug": "update-protokoll-vom-9-5-2022-online",
+    "status": "publish",
+    "type": "post",
+    "link": "https://tsn-elternrat.ch/update-protokoll-vom-9-5-2022-online/",
+    "title": {
+      "rendered": "Update: Protokoll vom 18.05.2026 online"
+    },
+    "content": {
+      "rendered": "\n<p class=\"wp-block-paragraph\">Das <a href=\"http://tsn-elternrat.ch/wp-content/uploads/2026/06/ProtokollSitzungElternrat_V3_SA.pdf\" data-type=\"link\" data-id=\"http://tsn-elternrat.ch/wp-content/uploads/2026/06/ProtokollSitzungElternrat_V3_SA.pdf\">Protokoll der letzten Elternratssitzung</a> ist online</p>\n\n\n\n<p class=\"wp-block-paragraph\"></p>\n",
+      "protected": false
+    },
+    "excerpt": {
+      "rendered": "<p>Das Protokoll der letzten Elternratssitzung ist online</p>\n",
+      "protected": false
+    },
+    "author": 2,
+    "featured_media": 0,
+    "comment_status": "closed",
+    "ping_status": "closed",
+    "sticky": false,
+    "template": "",
+    "format": "standard",
+    "meta": {
+      "footnotes": ""
+    },
+    "categories": [
+      4
+    ],
+    "tags": [],
+    "class_list": [
+      "post-988",
+      "post",
+      "type-post",
+      "status-publish",
+      "format-standard",
+      "hentry",
+      "category-news",
+      "wpbf-post"
+    ],
+    "post_mailing_queue_ids": [],
+    "_links": {
+      "self": [
+        {
+          "href": "https://tsn-elternrat.ch/wp-json/wp/v2/posts/988",
+          "targetHints": {
+            "allow": [
+              "GET"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://tsn-elternrat.ch/wp-json/wp/v2/posts"
+        }
+      ],
+      "about": [
+        {
+          "href": "https://tsn-elternrat.ch/wp-json/wp/v2/types/post"
+        }
+      ],
+      "author": [
+        {
+          "embeddable": true,
+          "href": "https://tsn-elternrat.ch/wp-json/wp/v2/users/2"
+        }
+      ],
+      "replies": [
+        {
+          "embeddable": true,
+          "href": "https://tsn-elternrat.ch/wp-json/wp/v2/comments?post=988"
+        }
+      ],
+      "version-history": [
+        {
+          "count": 24,
+          "href": "https://tsn-elternrat.ch/wp-json/wp/v2/posts/988/revisions"
+        }
+      ],
+      "predecessor-version": [
+        {
+          "id": 1369,
+          "href": "https://tsn-elternrat.ch/wp-json/wp/v2/posts/988/revisions/1369"
+        }
+      ],
+      "wp:attachment": [
+        {
+          "href": "https://tsn-elternrat.ch/wp-json/wp/v2/media?parent=988"
+        }
+      ],
+      "wp:term": [
+        {
+          "taxonomy": "category",
+          "embeddable": true,
+          "href": "https://tsn-elternrat.ch/wp-json/wp/v2/categories?post=988"
+        },
+        {
+          "taxonomy": "post_tag",
+          "embeddable": true,
+          "href": "https://tsn-elternrat.ch/wp-json/wp/v2/tags?post=988"
+        }
+      ],
+      "curies": [
+        {
+          "name": "wp",
+          "href": "https://api.w.org/{rel}",
+          "templated": true
+        }
+      ]
+    }
+  }
+]
