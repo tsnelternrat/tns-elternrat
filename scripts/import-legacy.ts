@@ -137,7 +137,7 @@ async function main() {
         klassen.push({ stufe: 'unterstufe', klasse: rolle.replace(/^1\.-3\. Klasse /, ''), delegierte: personen })
       else if (/^4\.-6\. Klasse /.test(rolle))
         klassen.push({ stufe: 'mittelstufe', klasse: rolle.replace(/^4\.-6\. Klasse /, ''), delegierte: personen })
-      else if (/(gruppe|Webseite)/i.test(rolle)) weitere.push({ rolle: rolle.replace('Webseite', 'Website'), personen })
+      else if (/gruppe/i.test(rolle)) weitere.push({ rolle, personen })
     }
     const legende = Array.from(dok.querySelectorAll('strong'))
       .find((el) => /Schuljahres \d{4}/.test(el.textContent ?? ''))

@@ -388,6 +388,10 @@ figcaption {
   margin-top: 1.6em;
 }
 
+.text + h2 {
+  margin-top: 1.6em;
+}
+
 .text h4 {
   font-size: 1rem;
   margin-bottom: 0.4em;
