@@ -367,26 +367,6 @@ figcaption {
   border: 2px solid var(--tinte);
 }
 
-.icon {
-  display: grid;
-  place-items: center;
-  width: 3.2rem;
-  height: 3.2rem;
-  margin-bottom: 0.3rem;
-  background: var(--salbei-hell);
-  border: 2px solid var(--tinte);
-  border-radius: 10px;
-}
-
-.icon svg {
-  width: 1.8rem;
-  height: 1.8rem;
-}
-
-.karte-farbig .icon {
-  background: var(--weiss);
-}
-
 /* Fliesstext aus dem CMS */
 .text > :last-child {
   margin-bottom: 0;

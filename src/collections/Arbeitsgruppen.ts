@@ -1,7 +1,7 @@
 import type { CollectionConfig } from 'payload'
 
 import { revalidateAfterChange, revalidateAfterDelete } from '../hooks/revalidate'
-import { slugField, teaserFelder } from '../lib/fields'
+import { slugField } from '../lib/fields'
 
 export const Arbeitsgruppen: CollectionConfig = {
   slug: 'arbeitsgruppen',
@@ -19,7 +19,6 @@ export const Arbeitsgruppen: CollectionConfig = {
       required: true,
       admin: { description: 'Ein bis drei Absätze. Erscheint auf der Übersicht aller Arbeitsgruppen.' },
     },
-    ...teaserFelder,
     {
       name: 'details',
       type: 'richText',

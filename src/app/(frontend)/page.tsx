@@ -1,7 +1,6 @@
 import Link from 'next/link'
 
 import { Download } from '@/components/Download'
-import { Icon, TeaserKopf } from '@/components/Icon'
 import { Text } from '@/components/Text'
 import { alsDokument, bildUrl, datum, payloadClient } from '@/lib/data'
 import type { Media } from '@/payload-types'
@@ -20,6 +19,7 @@ export default async function Startseite() {
   const bulletin = bulletins.docs[0]
   const galerie = galerien.docs[0]
   const bild = bildUrl(alsDokument<Media>(seite.bild), 'mittel')
+  const galerieBild = galerie ? bildUrl(alsDokument<Media>(galerie.bilder?.[0]), 'thumb') : null
 
   return (
     <>
@@ -44,7 +44,6 @@ export default async function Startseite() {
         <div className="karten">
           {bulletin && (
             <article className="karte">
-              <TeaserKopf bild={alsDokument<Media>(bulletin.titelbild)} icon="heft" />
               <p className="marke">Neustes Bulletin</p>
               <h3>{bulletin.titel}</h3>
               <Download datei={bulletin} titel="Herunterladen" zusatz={datum(bulletin.datum, 'monat')} />
@@ -53,7 +52,6 @@ export default async function Startseite() {
           )}
           {protokoll && (
             <article className="karte">
-              <Icon name="dokument" />
               <p className="marke">Letzte Sitzung</p>
               <h3>{protokoll.titel}</h3>
               <Download datei={protokoll} titel="Herunterladen" zusatz={`Schuljahr ${protokoll.schuljahr}`} />
@@ -62,9 +60,9 @@ export default async function Startseite() {
           )}
           {galerie && (
             <article className="karte">
-              <TeaserKopf bild={alsDokument<Media>(galerie.bilder?.[0])} icon="foto" />
               <p className="marke">Fotos</p>
               <h3>{galerie.titel}</h3>
+              {galerieBild && <img className="karte-bild" src={galerieBild} alt="" loading="lazy" />}
               <Link href={`/archiv/fotos/${galerie.slug}`}>Galerie ansehen</Link>
             </article>
           )}
@@ -73,7 +71,6 @@ export default async function Startseite() {
 
       <section className="karten karten-zwei">
         <article className="karte karte-farbig">
-          <Icon name="gruppe" />
           <h2>Mitmachen</h2>
           <p>
             In den Arbeitsgruppen packen Eltern gemeinsam an, vom Sommerabend bis zum sicheren Schulweg. Neue Gesichter
@@ -84,7 +81,6 @@ export default async function Startseite() {
           </Link>
         </article>
         <article className="karte">
-          <Icon name="sprechblase" />
           <h2>Elternbox</h2>
           <p>Eine Frage, eine Idee oder etwas, das Sie beschäftigt? Die Elternbox ist der direkte Draht zum Elternrat.</p>
           <Link href="/elternbox" className="knopf">
