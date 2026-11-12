@@ -1,7 +1,8 @@
 import type { CollectionAfterChangeHook, CollectionAfterDeleteHook, GlobalAfterChangeHook } from 'payload'
 
 /**
- * Die Website ist klein: Nach jeder Änderung im Admin wird sie komplett neu gerendert.
+ * Die Seiten sind statisch (revalidate = false) und werden nur hier erneuert:
+ * Nach jeder Änderung im Admin wird die ganze Website als veraltet markiert und beim nächsten Aufruf neu erzeugt.
  * Ausserhalb von Next.js (z. B. im Import-Skript) gibt es keinen Cache; dort ist der Aufruf wirkungslos.
  */
 async function revalidateSite(): Promise<void> {

@@ -6,7 +6,7 @@ import { payloadClient } from '@/lib/data'
 import { Formular } from './Formular'
 import { Seite } from '@/components/Seite'
 
-export const revalidate = 3600
+export const revalidate = false
 export const metadata: Metadata = {
   title: 'Elternbox',
   description: 'Schreiben Sie dem Elternrat der Tagesschule Nordstrasse direkt, auf Wunsch auch anonym.',

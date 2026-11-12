@@ -9,7 +9,7 @@ import { alsListe, payloadClient, youtubeId } from '@/lib/data'
 import type { Dokumente } from '@/payload-types'
 import { Seite } from '@/components/Seite'
 
-export const revalidate = 3600
+export const revalidate = false
 
 type Props = { params: Promise<{ slug: string }> }
 

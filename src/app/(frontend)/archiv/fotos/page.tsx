@@ -6,7 +6,7 @@ import { alsDokument, bildUrl, datum, payloadClient } from '@/lib/data'
 import type { Media } from '@/payload-types'
 import { Seite } from '@/components/Seite'
 
-export const revalidate = 3600
+export const revalidate = false
 export const metadata: Metadata = { title: 'Fotos' }
 
 export default async function FotosSeite() {

@@ -5,7 +5,7 @@ import { Download } from '@/components/Download'
 import { datum, nachSchuljahr, payloadClient } from '@/lib/data'
 import { Seite } from '@/components/Seite'
 
-export const revalidate = 3600
+export const revalidate = false
 export const metadata: Metadata = { title: 'Bulletins' }
 
 export default async function BulletinsSeite() {

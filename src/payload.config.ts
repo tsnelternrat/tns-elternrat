@@ -51,6 +51,8 @@ export default buildConfig({
       })
     : undefined,
   sharp,
+  // Die Website nutzt nur die Local API, der Admin die REST-API. GraphQL bleibt aus.
+  graphQL: { disable: true },
   plugins: [
     vercelBlobStorage({
       enabled: Boolean(process.env.BLOB_READ_WRITE_TOKEN),

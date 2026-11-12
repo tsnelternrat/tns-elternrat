@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { payloadClient } from '@/lib/data'
 import { Seite } from '@/components/Seite'
 
-export const revalidate = 3600
+export const revalidate = false
 export const metadata: Metadata = { title: 'Archiv' }
 
 export default async function ArchivSeite() {

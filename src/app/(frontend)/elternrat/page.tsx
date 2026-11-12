@@ -6,7 +6,7 @@ import { alsDokument, alsListe, bildUrl, payloadClient } from '@/lib/data'
 import type { Dokumente, Media } from '@/payload-types'
 import { Seite } from '@/components/Seite'
 
-export const revalidate = 3600
+export const revalidate = false
 export const metadata: Metadata = { title: 'Elternrat' }
 
 const stufen = [

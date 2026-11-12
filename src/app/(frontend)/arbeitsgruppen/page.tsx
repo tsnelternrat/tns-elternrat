@@ -5,7 +5,7 @@ import { Text } from '@/components/Text'
 import { hatDetailseite, payloadClient } from '@/lib/data'
 import { Seite } from '@/components/Seite'
 
-export const revalidate = 3600
+export const revalidate = false
 export const metadata: Metadata = { title: 'Arbeitsgruppen' }
 
 export default async function ArbeitsgruppenSeite() {

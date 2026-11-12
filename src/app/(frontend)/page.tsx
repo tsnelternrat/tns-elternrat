@@ -7,7 +7,7 @@ import { alsDokument, bildUrl, datum, payloadClient } from '@/lib/data'
 import type { Media } from '@/payload-types'
 import { Seite } from '@/components/Seite'
 
-export const revalidate = 3600
+export const revalidate = false
 
 export default async function Startseite() {
   const payload = await payloadClient()
