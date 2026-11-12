@@ -163,6 +163,14 @@ export interface Arbeitsgruppen {
     [k: string]: unknown;
   };
   /**
+   * Namen durch Komma getrennt, zum Beispiel «Anna Muster, Beat Beispiel (Layout)».
+   */
+  beteiligte?: string | null;
+  /**
+   * Die Arbeitsgruppe ist zurzeit nicht aktiv.
+   */
+  ruhend?: boolean | null;
+  /**
    * Optional, zum Beispiel eine Charta oder ein Merkblatt. Sobald hier, bei Dokumenten oder Videos etwas steht, bekommt die Arbeitsgruppe eine eigene Seite.
    */
   details?: {
@@ -487,6 +495,8 @@ export interface PayloadMigration {
 export interface ArbeitsgruppenSelect<T extends boolean = true> {
   name?: T;
   beschreibung?: T;
+  beteiligte?: T;
+  ruhend?: T;
   details?: T;
   dokumente?: T;
   videos?:

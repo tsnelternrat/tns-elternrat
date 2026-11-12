@@ -343,6 +343,11 @@ figcaption {
   font-size: 1.3rem;
 }
 
+.beteiligte {
+  font-size: 0.9rem;
+  color: var(--tinte-leise);
+}
+
 .karte-farbig {
   background: var(--salbei-hell);
 }

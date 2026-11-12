@@ -15,7 +15,7 @@ const alteAdressen: [string, string][] = [
   ['/arbeitsgruppen/ag-schueeli', '/arbeitsgruppen'],
   ['/arbeitsgruppen/ag-freiluftlabor', '/arbeitsgruppen'],
   ['/charta-klassenznueni', '/arbeitsgruppen/ag-klassenznueni'],
-  ['/lauseplage', '/arbeitsgruppen/ag-laeuse'],
+  ['/lauseplage', '/arbeitsgruppen'],
   ['/dokumente', '/archiv'],
   ['/dokumente/protokolle', '/archiv/protokolle'],
   ['/dokumente/bulletins', '/archiv/bulletins'],

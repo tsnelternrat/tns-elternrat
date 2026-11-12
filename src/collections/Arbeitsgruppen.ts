@@ -20,6 +20,19 @@ export const Arbeitsgruppen: CollectionConfig = {
       admin: { description: 'Ein bis drei Absätze. Erscheint auf der Übersicht aller Arbeitsgruppen.' },
     },
     {
+      name: 'beteiligte',
+      type: 'text',
+      label: 'Beteiligte',
+      admin: { description: 'Namen durch Komma getrennt, zum Beispiel «Anna Muster, Beat Beispiel (Layout)».' },
+    },
+    {
+      name: 'ruhend',
+      type: 'checkbox',
+      label: 'Ruhend',
+      defaultValue: false,
+      admin: { position: 'sidebar', description: 'Die Arbeitsgruppe ist zurzeit nicht aktiv.' },
+    },
+    {
       name: 'details',
       type: 'richText',
       label: 'Weitere Informationen',

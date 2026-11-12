@@ -66,3 +66,12 @@ Platzhalter, die im Admin noch zu bereinigen sind:
 - **Elternbox:** Einleitung ist der Text der alten Kontaktseite; Benachrichtigungsadresse ist leer.
 - **Elternrat:** Bildlegende sagt 2026/2027, Liste ist 2025/26; Konzept 2015 und Flyer sind verlinkt, die Fassungen 2003/2006 nicht.
 - Alte AG-Texte sprechen noch vom «Schülerclub Nordstrasse».
+
+## Nachtrag aus dem Protokoll vom 28.09.2026
+
+- Arbeitsgruppen haben neu die Felder «Beteiligte» und «Ruhend»; alle sind nach Protokoll gefüllt.
+- Neu angelegt: AG Webseite/Digitalisierung, AG Advent, AG Räbeliechtli, AG Infrastruktur, AG Medienbewusstsein, AG Fundgrube. **Die Kurzbeschreibungen sind Platzhalter** (ein Satz, aus dem Namen abgeleitet).
+- Umbenannt: AG Bulletin → AG Elternrat-Bulletin, AG Elternbildung → AG Elternweiterbildung (Adressen unverändert).
+- AG Läuse entfernt; ihre drei PDFs liegen noch unverknüpft unter «Dokumente». AG Kulturbrücke bleibt ohne Beteiligte.
+- Vorstand: Vorsitz Maëlis Nibourel / Dennis Padel, Finanzen Johannes von Liebe.
+- Die Delegiertenliste ist weiterhin die von 2025/26; die Liste 2026/27 fehlt noch.

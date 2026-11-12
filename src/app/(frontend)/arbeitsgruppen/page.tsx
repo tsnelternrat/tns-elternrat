@@ -21,8 +21,14 @@ export default async function ArbeitsgruppenSeite() {
       <div className="karten karten-zwei">
         {ags.docs.map((ag) => (
           <article className="karte" key={ag.id} id={ag.slug ?? undefined}>
+            {ag.ruhend && <p className="marke">Zurzeit ruhend</p>}
             <h2>{ag.name}</h2>
             <Text inhalt={ag.beschreibung} />
+            {ag.beteiligte && (
+              <p className="beteiligte">
+                <strong>Dabei:</strong> {ag.beteiligte}
+              </p>
+            )}
             {hatDetailseite(ag) && <Link href={`/arbeitsgruppen/${ag.slug}`}>Mehr erfahren</Link>}
           </article>
         ))}
