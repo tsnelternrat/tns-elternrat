@@ -4,6 +4,7 @@ import { Text } from '@/components/Text'
 import { payloadClient } from '@/lib/data'
 
 import { Formular } from './Formular'
+import { Seite } from '@/components/Seite'
 
 export const revalidate = 3600
 export const metadata: Metadata = {
@@ -16,14 +17,16 @@ export default async function ElternboxSeite() {
   const texte = await payload.findGlobal({ slug: 'texte', depth: 0 })
 
   return (
-    <div className="schmal">
-      <h1>Elternbox</h1>
-      <Text inhalt={texte.elternboxEinleitung} className="gross" />
-      <Formular />
-      <p className="hinweis">
-        Ihre Nachricht lesen nur die Mitglieder des Elternrats. Name und E-Mail-Adresse sind freiwillig; ohne E-Mail
-        können wir Ihnen allerdings nicht antworten.
-      </p>
-    </div>
+    <Seite>
+      <div className="schmal">
+        <h1>Elternbox</h1>
+        <Text inhalt={texte.elternboxEinleitung} className="gross" />
+        <Formular />
+        <p className="hinweis">
+          Ihre Nachricht lesen nur die Mitglieder des Elternrats. Name und E-Mail-Adresse sind freiwillig; ohne E-Mail
+          können wir Ihnen allerdings nicht antworten.
+        </p>
+      </div>
+    </Seite>
   )
 }

@@ -54,7 +54,7 @@ main {
   padding-block: 2.5rem 4rem;
 }
 
-main > section,
+main > div > section,
 .jahrgang {
   margin-top: 3.5rem;
 }
@@ -661,7 +661,7 @@ figcaption {
     padding-block: 1.5rem 3rem;
   }
 
-  main > section,
+  main > div > section,
   .jahrgang {
     margin-top: 2.5rem;
   }
@@ -755,7 +755,92 @@ figcaption {
   }
 }
 
+/* Übergänge zwischen Seiten (View Transitions), ausgelöst durch components/Seite.tsx */
+.kopf {
+  view-transition-name: kopf;
+}
+
+::view-transition {
+  pointer-events: none;
+}
+
+::view-transition-group(kopf) {
+  animation: none;
+  z-index: 100;
+}
+
+::view-transition-old(kopf) {
+  display: none;
+}
+
+::view-transition-new(kopf) {
+  animation: none;
+}
+
+::view-transition-old(.seite) {
+  animation: 120ms ease-in both einblenden reverse;
+}
+
+::view-transition-new(.seite) {
+  animation:
+    220ms ease-out 120ms both einblenden,
+    340ms ease-out both steigen;
+}
+
+::view-transition-old(.vor),
+::view-transition-old(.zurueck) {
+  animation:
+    130ms ease-in both einblenden reverse,
+    320ms ease-in-out both schieben reverse;
+}
+
+::view-transition-new(.vor),
+::view-transition-new(.zurueck) {
+  animation:
+    200ms ease-out 130ms both einblenden,
+    320ms ease-in-out both schieben;
+}
+
+::view-transition-old(.vor),
+::view-transition-new(.zurueck) {
+  --versatz: -40px;
+}
+
+::view-transition-new(.vor),
+::view-transition-old(.zurueck) {
+  --versatz: 40px;
+}
+
+::view-transition-group(.morph) {
+  animation-duration: 360ms;
+}
+
+@keyframes einblenden {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes steigen {
+  from {
+    translate: 0 10px;
+  }
+}
+
+@keyframes schieben {
+  from {
+    translate: var(--versatz);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(*),
+  ::view-transition-new(*),
+  ::view-transition-group(*) {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+  }
+
   * {
     transition: none !important;
     scroll-behavior: auto !important;

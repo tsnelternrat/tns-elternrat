@@ -1,9 +1,11 @@
 import Link from 'next/link'
+import { ViewTransition } from 'react'
 
 import { Download } from '@/components/Download'
 import { Text } from '@/components/Text'
 import { alsDokument, bildUrl, datum, payloadClient } from '@/lib/data'
 import type { Media } from '@/payload-types'
+import { Seite } from '@/components/Seite'
 
 export const revalidate = 3600
 
@@ -22,7 +24,7 @@ export default async function Startseite() {
   const galerieBild = galerie ? bildUrl(alsDokument<Media>(galerie.bilder?.[0]), 'thumb') : null
 
   return (
-    <>
+    <Seite>
       <section className="buehne">
         <div>
           <h1>{seite.titel}</h1>
@@ -62,8 +64,14 @@ export default async function Startseite() {
             <article className="karte">
               <p className="marke">Fotos</p>
               <h3>{galerie.titel}</h3>
-              {galerieBild && <img className="karte-bild" src={galerieBild} alt="" loading="lazy" />}
-              <Link href={`/archiv/fotos/${galerie.slug}`}>Galerie ansehen</Link>
+              {galerieBild && (
+                <ViewTransition name={`galerie-${galerie.slug}`} share="morph" default="none">
+                  <img className="karte-bild" src={galerieBild} alt="" loading="lazy" />
+                </ViewTransition>
+              )}
+              <Link href={`/archiv/fotos/${galerie.slug}`} transitionTypes={['vor']}>
+                Galerie ansehen
+              </Link>
             </article>
           )}
         </div>
@@ -88,6 +96,6 @@ export default async function Startseite() {
           </Link>
         </article>
       </section>
-    </>
+    </Seite>
   )
 }

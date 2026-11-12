@@ -3,6 +3,7 @@ import Link from 'next/link'
 
 import { Text } from '@/components/Text'
 import { hatDetailseite, payloadClient } from '@/lib/data'
+import { Seite } from '@/components/Seite'
 
 export const revalidate = 3600
 export const metadata: Metadata = { title: 'Arbeitsgruppen' }
@@ -15,7 +16,7 @@ export default async function ArbeitsgruppenSeite() {
   ])
 
   return (
-    <>
+    <Seite>
       <h1>Arbeitsgruppen</h1>
       <Text inhalt={texte.arbeitsgruppenEinleitung} className="gross schmal" />
       <div className="karten karten-zwei">
@@ -29,13 +30,17 @@ export default async function ArbeitsgruppenSeite() {
                 <strong>Dabei:</strong> {ag.beteiligte}
               </p>
             )}
-            {hatDetailseite(ag) && <Link href={`/arbeitsgruppen/${ag.slug}`}>Mehr erfahren</Link>}
+            {hatDetailseite(ag) && (
+              <Link href={`/arbeitsgruppen/${ag.slug}`} transitionTypes={['vor']}>
+                Mehr erfahren
+              </Link>
+            )}
           </article>
         ))}
       </div>
       <p className="hinweis">
         Möchten Sie in einer Arbeitsgruppe mitmachen? <Link href="/elternbox">Schreiben Sie uns in die Elternbox.</Link>
       </p>
-    </>
+    </Seite>
   )
 }

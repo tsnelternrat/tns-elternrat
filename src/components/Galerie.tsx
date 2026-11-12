@@ -1,10 +1,11 @@
 'use client'
 
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState, ViewTransition } from 'react'
 
 type Bild = { thumb: string; gross: string; alt: string }
 
-export function Galerie({ bilder }: { bilder: Bild[] }) {
+/** `uebergang`: Name, unter dem das erste Bild beim Seitenwechsel aus dem Vorschaubild der Übersicht hervorgeht. */
+export function Galerie({ bilder, uebergang }: { bilder: Bild[]; uebergang?: string }) {
   const dialog = useRef<HTMLDialogElement>(null)
   const [aktiv, setAktiv] = useState<number | null>(null)
 
@@ -36,7 +37,13 @@ export function Galerie({ bilder }: { bilder: Bild[] }) {
         {bilder.map((b, i) => (
           <li key={b.gross}>
             <button type="button" onClick={() => setAktiv(i)} aria-label={`Bild ${i + 1} von ${bilder.length} vergrössern`}>
-              <img src={b.thumb} alt={b.alt} loading="lazy" width={480} height={480} />
+              {i === 0 && uebergang ? (
+                <ViewTransition name={uebergang} share="morph" default="none">
+                  <img src={b.thumb} alt={b.alt} width={480} height={480} />
+                </ViewTransition>
+              ) : (
+                <img src={b.thumb} alt={b.alt} loading="lazy" width={480} height={480} />
+              )}
             </button>
           </li>
         ))}

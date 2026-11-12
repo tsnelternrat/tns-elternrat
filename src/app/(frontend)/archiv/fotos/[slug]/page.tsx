@@ -6,6 +6,7 @@ import { cache } from 'react'
 import { Galerie } from '@/components/Galerie'
 import { alsListe, bildUrl, datum, payloadClient } from '@/lib/data'
 import type { Media } from '@/payload-types'
+import { Seite } from '@/components/Seite'
 
 export const revalidate = 3600
 
@@ -38,15 +39,17 @@ export default async function GalerieSeite({ params }: Props) {
   })
 
   return (
-    <>
+    <Seite>
       <p className="pfad">
-        <Link href="/archiv/fotos">← Alle Fotos</Link>
+        <Link href="/archiv/fotos" transitionTypes={['zurueck']}>
+          ← Alle Fotos
+        </Link>
       </p>
       <h1>{galerie.titel}</h1>
       <p className="marke">
         {datum(galerie.datum, 'monat')} · {bilder.length} Bilder
       </p>
-      <Galerie bilder={bilder} />
-    </>
+      <Galerie bilder={bilder} uebergang={`galerie-${galerie.slug}`} />
+    </Seite>
   )
 }

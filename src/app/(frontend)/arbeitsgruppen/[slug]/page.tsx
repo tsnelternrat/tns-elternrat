@@ -7,6 +7,7 @@ import { DownloadListe } from '@/components/Download'
 import { Text } from '@/components/Text'
 import { alsListe, payloadClient, youtubeId } from '@/lib/data'
 import type { Dokumente } from '@/payload-types'
+import { Seite } from '@/components/Seite'
 
 export const revalidate = 3600
 
@@ -36,36 +37,40 @@ export default async function ArbeitsgruppeSeite({ params }: Props) {
   const videos = (ag.videos ?? []).map((v) => ({ ...v, yt: youtubeId(v.url) })).filter((v) => v.yt)
 
   return (
-    <article className="schmal">
-      <p className="pfad">
-        <Link href="/arbeitsgruppen">← Alle Arbeitsgruppen</Link>
-      </p>
-      <h1>{ag.name}</h1>
-      <Text inhalt={ag.beschreibung} className="gross" />
-      <Text inhalt={ag.details} />
-      {dokumente.length > 0 && (
-        <>
-          <h2>Dokumente</h2>
-          <DownloadListe dateien={dokumente} />
-        </>
-      )}
-      {videos.length > 0 && (
-        <>
-          <h2>Videos</h2>
-          <div className="videos">
-            {videos.map((v) => (
-              <iframe
-                key={v.id}
-                src={`https://www.youtube-nocookie.com/embed/${v.yt}`}
-                title={v.titel || 'Video'}
-                loading="lazy"
-                allow="encrypted-media; picture-in-picture"
-                allowFullScreen
-              />
-            ))}
-          </div>
-        </>
-      )}
-    </article>
+    <Seite>
+      <article className="schmal">
+        <p className="pfad">
+          <Link href="/arbeitsgruppen" transitionTypes={['zurueck']}>
+            ← Alle Arbeitsgruppen
+          </Link>
+        </p>
+        <h1>{ag.name}</h1>
+        <Text inhalt={ag.beschreibung} className="gross" />
+        <Text inhalt={ag.details} />
+        {dokumente.length > 0 && (
+          <>
+            <h2>Dokumente</h2>
+            <DownloadListe dateien={dokumente} />
+          </>
+        )}
+        {videos.length > 0 && (
+          <>
+            <h2>Videos</h2>
+            <div className="videos">
+              {videos.map((v) => (
+                <iframe
+                  key={v.id}
+                  src={`https://www.youtube-nocookie.com/embed/${v.yt}`}
+                  title={v.titel || 'Video'}
+                  loading="lazy"
+                  allow="encrypted-media; picture-in-picture"
+                  allowFullScreen
+                />
+              ))}
+            </div>
+          </>
+        )}
+      </article>
+    </Seite>
   )
 }

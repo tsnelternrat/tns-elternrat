@@ -4,6 +4,7 @@ import { DownloadListe } from '@/components/Download'
 import { Text } from '@/components/Text'
 import { alsDokument, alsListe, bildUrl, payloadClient } from '@/lib/data'
 import type { Dokumente, Media } from '@/payload-types'
+import { Seite } from '@/components/Seite'
 
 export const revalidate = 3600
 export const metadata: Metadata = { title: 'Elternrat' }
@@ -22,7 +23,7 @@ export default async function ElternratSeite() {
   const dokumente = alsListe<Dokumente>(er.dokumente)
 
   return (
-    <>
+    <Seite>
       <h1>Der Elternrat</h1>
       <div className="spalten">
         <div>
@@ -92,6 +93,6 @@ export default async function ElternratSeite() {
         )}
         <p className="hinweis">Mit Fragen und Wünschen wenden Sie sich am besten an die Delegierten Ihrer Klasse.</p>
       </section>
-    </>
+    </Seite>
   )
 }
