@@ -835,6 +835,18 @@ export interface Texte {
     [k: string]: unknown;
   } | null;
   /**
+   * Steht auf der Archiv-Übersicht und oben auf der Seite «Protokolle».
+   */
+  protokolleEinleitung?: string | null;
+  /**
+   * Steht auf der Archiv-Übersicht und oben auf der Seite «Bulletins».
+   */
+  bulletinsEinleitung?: string | null;
+  /**
+   * Steht auf der Archiv-Übersicht und oben auf der Seite «Fotos».
+   */
+  fotosEinleitung?: string | null;
+  /**
    * An diese Adressen geht eine E-Mail, sobald jemand in die Elternbox schreibt. Mehrere Adressen durch Komma trennen.
    */
   benachrichtigungsEmail?: string | null;
@@ -896,6 +908,9 @@ export interface ElternratSelect<T extends boolean = true> {
 export interface TexteSelect<T extends boolean = true> {
   arbeitsgruppenEinleitung?: T;
   elternboxEinleitung?: T;
+  protokolleEinleitung?: T;
+  bulletinsEinleitung?: T;
+  fotosEinleitung?: T;
   benachrichtigungsEmail?: T;
   updatedAt?: T;
   createdAt?: T;

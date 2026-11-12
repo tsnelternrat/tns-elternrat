@@ -10,6 +10,7 @@ export const metadata: Metadata = { title: 'Protokolle' }
 
 export default async function ProtokolleSeite() {
   const payload = await payloadClient()
+  const texte = await payload.findGlobal({ slug: 'texte', depth: 0 })
   const { docs } = await payload.find({ collection: 'protokolle', sort: '-datum', limit: 1000, depth: 0 })
 
   return (
@@ -21,7 +22,7 @@ export default async function ProtokolleSeite() {
           </Link>
         </p>
         <h1>Protokolle</h1>
-        <p className="gross">Die Protokolle der Elternratssitzungen, nach Schuljahr geordnet.</p>
+        {texte.protokolleEinleitung && <p className="gross">{texte.protokolleEinleitung}</p>}
         {nachSchuljahr(docs).map(([schuljahr, eintraege]) => (
           <section key={schuljahr} className="jahrgang">
             <h2>Schuljahr {schuljahr}</h2>

@@ -9,7 +9,8 @@ export const metadata: Metadata = { title: 'Archiv' }
 
 export default async function ArchivSeite() {
   const payload = await payloadClient()
-  const [protokolle, bulletins, galerien] = await Promise.all([
+  const [texte, protokolle, bulletins, galerien] = await Promise.all([
+    payload.findGlobal({ slug: 'texte', depth: 0 }),
     payload.count({ collection: 'protokolle' }),
     payload.count({ collection: 'bulletins' }),
     payload.count({ collection: 'galerien' }),
@@ -18,19 +19,19 @@ export default async function ArchivSeite() {
     {
       href: '/archiv/protokolle',
       titel: 'Protokolle',
-      text: 'Was an den Sitzungen des Elternrats besprochen wurde.',
+      text: texte.protokolleEinleitung,
       anzahl: `${protokolle.totalDocs} Protokolle`,
     },
     {
       href: '/archiv/bulletins',
       titel: 'Bulletins',
-      text: 'Das Heft des Elternrats mit Berichten und Bildern aus dem Schuljahr.',
+      text: texte.bulletinsEinleitung,
       anzahl: `${bulletins.totalDocs} Ausgaben`,
     },
     {
       href: '/archiv/fotos',
       titel: 'Fotos',
-      text: 'Eindrücke von Sommerfesten und anderen Anlässen.',
+      text: texte.fotosEinleitung,
       anzahl: `${galerien.totalDocs} Galerien`,
     },
   ]
@@ -42,7 +43,7 @@ export default async function ArchivSeite() {
           <Link href={b.href} className="karte karte-link" key={b.href} transitionTypes={['vor']}>
             <p className="marke">{b.anzahl}</p>
             <h2>{b.titel}</h2>
-            <p>{b.text}</p>
+            {b.text && <p>{b.text}</p>}
           </Link>
         ))}
       </div>

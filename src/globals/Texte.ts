@@ -26,6 +26,24 @@ export const Texte: GlobalConfig = {
       label: 'Einleitung der Elternbox',
     },
     {
+      name: 'protokolleEinleitung',
+      type: 'textarea',
+      label: 'Kurztext zu den Protokollen',
+      admin: { description: 'Steht auf der Archiv-Übersicht und oben auf der Seite «Protokolle».' },
+    },
+    {
+      name: 'bulletinsEinleitung',
+      type: 'textarea',
+      label: 'Kurztext zu den Bulletins',
+      admin: { description: 'Steht auf der Archiv-Übersicht und oben auf der Seite «Bulletins».' },
+    },
+    {
+      name: 'fotosEinleitung',
+      type: 'textarea',
+      label: 'Kurztext zu den Fotos',
+      admin: { description: 'Steht auf der Archiv-Übersicht und oben auf der Seite «Fotos».' },
+    },
+    {
       name: 'benachrichtigungsEmail',
       type: 'text',
       label: 'Benachrichtigung an',

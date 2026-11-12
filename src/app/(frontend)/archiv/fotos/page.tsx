@@ -11,6 +11,7 @@ export const metadata: Metadata = { title: 'Fotos' }
 
 export default async function FotosSeite() {
   const payload = await payloadClient()
+  const texte = await payload.findGlobal({ slug: 'texte', depth: 0 })
   const { docs } = await payload.find({ collection: 'galerien', sort: '-datum', limit: 200, depth: 1 })
 
   return (
@@ -21,6 +22,7 @@ export default async function FotosSeite() {
         </Link>
       </p>
       <h1>Fotos</h1>
+      {texte.fotosEinleitung && <p className="gross schmal">{texte.fotosEinleitung}</p>}
       <div className="karten">
         {docs.map((g) => {
           const titelbild = bildUrl(alsDokument<Media>(g.bilder?.[0]), 'thumb')
