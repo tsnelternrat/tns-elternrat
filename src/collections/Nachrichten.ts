@@ -1,5 +1,7 @@
 import type { CollectionConfig } from 'payload'
 
+import { adressen } from '../globals/Texte'
+
 /**
  * Nachrichten aus der Elternbox. Sie entstehen nur über das Formular auf der Website
  * (Server Action mit Local API) und sind nur für angemeldete Personen sichtbar.
@@ -26,8 +28,8 @@ export const Nachrichten: CollectionConfig = {
         if (operation !== 'create') return doc
         try {
           const texte = await req.payload.findGlobal({ slug: 'texte', req })
-          const an = texte.benachrichtigungsEmail
-          if (!an || !process.env.RESEND_API_KEY) return doc
+          const an = adressen(texte.benachrichtigungsEmail)
+          if (!an.length || !process.env.RESEND_API_KEY) return doc
           const absender = [doc.name, doc.email].filter(Boolean).join(', ') || 'anonym'
           await req.payload.sendEmail({
             to: an,

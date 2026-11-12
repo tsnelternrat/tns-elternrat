@@ -851,7 +851,7 @@ export interface Texte {
     [k: string]: unknown;
   } | null;
   /**
-   * An diese Adresse geht eine E-Mail, sobald jemand in die Elternbox schreibt.
+   * An diese Adressen geht eine E-Mail, sobald jemand in die Elternbox schreibt. Mehrere Adressen durch Komma trennen.
    */
   benachrichtigungsEmail?: string | null;
   updatedAt?: string | null;
