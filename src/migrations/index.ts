@@ -1,10 +1,11 @@
-import * as migration_20261114_094541_baseline from './20261114_094541_baseline'
-import * as migration_20261114_094608_bloecke from './20261114_094608_bloecke'
-import * as migration_20261114_101710_seiten from './20261114_101710_seiten'
-import * as migration_20261114_105133_archiv_unterseiten from './20261114_105133_archiv_unterseiten'
-import * as migration_20261114_105652_alte_felder_entfernt from './20261114_105652_alte_felder_entfernt'
-import * as migration_20261114_135119_ordner from './20261114_135119_ordner'
-import * as migration_20261114_135200_ordner_befuellen from './20261114_135200_ordner_befuellen'
+import * as migration_20261114_094541_baseline from './20261114_094541_baseline';
+import * as migration_20261114_094608_bloecke from './20261114_094608_bloecke';
+import * as migration_20261114_101710_seiten from './20261114_101710_seiten';
+import * as migration_20261114_105133_archiv_unterseiten from './20261114_105133_archiv_unterseiten';
+import * as migration_20261114_105652_alte_felder_entfernt from './20261114_105652_alte_felder_entfernt';
+import * as migration_20261114_135119_ordner from './20261114_135119_ordner';
+import * as migration_20261114_135200_ordner_befuellen from './20261114_135200_ordner_befuellen';
+import * as migration_20261114_143936_bildgroesse_klein from './20261114_143936_bildgroesse_klein';
 
 export const migrations = [
   {
@@ -42,4 +43,9 @@ export const migrations = [
     down: migration_20261114_135200_ordner_befuellen.down,
     name: '20261114_135200_ordner_befuellen',
   },
-]
+  {
+    up: migration_20261114_143936_bildgroesse_klein.up,
+    down: migration_20261114_143936_bildgroesse_klein.down,
+    name: '20261114_143936_bildgroesse_klein'
+  },
+];

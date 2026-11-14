@@ -38,8 +38,10 @@ export const Media: CollectionConfig = {
     // Originale werden beim Hochladen verkleinert, Handyfotos sind sonst mehrere MB gross.
     resizeOptions: { width: 2400, height: 2400, fit: 'inside', withoutEnlargement: true },
     // Die Website zeigt nur diese Grössen, als WebP (etwa ein Drittel kleiner als JPEG).
-    // Bestehende Bilder umrechnen: scripts/webp-umrechnen.ts (gleiche Einstellungen).
+    // Nach einer Änderung hier die bestehenden Bilder nachrechnen: pnpm bildgroessen (scripts/bildgroessen.ts).
     imageSizes: [
+      // Galerie-Kacheln auf dem Handy und am Desktop (etwa 170–190 px breit, bei 2× Pixeldichte).
+      { name: 'klein', width: 360, height: 360, fit: 'cover', formatOptions: webp },
       { name: 'thumb', width: 480, height: 480, fit: 'cover', formatOptions: webp },
       { name: 'mittel', width: 1200, withoutEnlargement: true, formatOptions: webp },
     ],

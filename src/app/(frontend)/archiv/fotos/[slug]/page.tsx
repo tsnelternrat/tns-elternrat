@@ -14,7 +14,12 @@ type Props = { params: Promise<{ slug: string }> }
 
 const ladeGalerie = cache(async (slug: string) => {
   const payload = await payloadClient()
-  const { docs } = await payload.find({ collection: 'galerien', where: { slug: { equals: slug } }, limit: 1, depth: 1 })
+  const { docs } = await payload.find({
+    collection: 'galerien',
+    where: { slug: { equals: slug } },
+    limit: 1,
+    depth: 1,
+  })
   return docs[0] ?? null
 })
 
@@ -35,7 +40,7 @@ export default async function GalerieSeite({ params }: Props) {
   const bilder = alsListe<Media>(galerie.bilder).flatMap((b) => {
     const gross = bildUrl(b, 'mittel')
     const thumb = bildUrl(b, 'thumb')
-    return gross && thumb ? [{ gross, thumb, alt: b.alt ?? '' }] : []
+    return gross && thumb ? [{ gross, thumb, klein: b.sizes?.klein?.url, alt: b.alt ?? '' }] : []
   })
 
   return (

@@ -16,7 +16,7 @@
     "bloecke:ueberfuehren": "cross-env NODE_OPTIONS=--no-deprecation payload run scripts/bloecke-ueberfuehren.ts --",
     "db:kopie": "bash scripts/db-kopie.sh",
     "migrate": "cross-env NODE_OPTIONS=--no-deprecation PAYLOAD_MIGRATING=true payload run scripts/migrate.ts --",
-    "webp": "cross-env NODE_OPTIONS=--no-deprecation payload run scripts/webp-umrechnen.ts --"
+    "bildgroessen": "cross-env NODE_OPTIONS=--no-deprecation payload run scripts/bildgroessen.ts --"
   },
   "dependencies": {
     "@payloadcms/db-postgres": "3.93.0",

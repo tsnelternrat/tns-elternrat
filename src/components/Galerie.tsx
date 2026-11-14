@@ -5,7 +5,14 @@ import { useCallback, useEffect, useRef, useState, ViewTransition } from 'react'
 /** So viele Vorschaubilder passen auf dem Handy etwa in den ersten Bildschirm. */
 const SOFORT = 6
 
-type Bild = { thumb: string; gross: string; alt: string }
+type Bild = { thumb: string; klein?: string | null; gross: string; alt: string }
+
+/** Kachel etwa 165–190 px breit (siehe .galerie in styles.css); der Browser wählt 360 oder 480 px. */
+const vorschau = (b: Bild) => ({
+  src: b.thumb,
+  srcSet: b.klein ? `${b.klein} 360w, ${b.thumb} 480w` : undefined,
+  sizes: b.klein ? '11.5rem' : undefined,
+})
 
 /** `uebergang`: Name, unter dem das erste Bild beim Seitenwechsel aus dem Vorschaubild der Übersicht hervorgeht. */
 export function Galerie({ bilder, uebergang }: { bilder: Bild[]; uebergang?: string }) {
@@ -47,12 +54,12 @@ export function Galerie({ bilder, uebergang }: { bilder: Bild[]; uebergang?: str
             >
               {i === 0 && uebergang ? (
                 <ViewTransition name={uebergang} share="morph" default="none">
-                  <img src={b.thumb} alt={b.alt} fetchPriority="high" width={480} height={480} />
+                  <img {...vorschau(b)} alt={b.alt} fetchPriority="high" width={480} height={480} />
                 </ViewTransition>
               ) : (
                 // Die ersten Bilder sind sofort sichtbar und werden nicht verzögert geladen.
                 <img
-                  src={b.thumb}
+                  {...vorschau(b)}
                   alt={b.alt}
                   loading={i < SOFORT ? undefined : 'lazy'}
                   fetchPriority={i === 0 ? 'high' : undefined}
