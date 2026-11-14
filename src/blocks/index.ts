@@ -89,7 +89,6 @@ export const TextBlock: Block = {
 export const BildText: Block = {
   slug: 'bildText',
   interfaceName: 'BildTextBlock',
-  dbName: 'bild_text',
   labels: { singular: 'Bild mit Text', plural: 'Bilder mit Text' },
   fields: [
     titel,

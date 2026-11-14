@@ -4,7 +4,7 @@
   "description": "Website des Elternrats der Tagesschule Nordstrasse",
   "type": "module",
   "scripts": {
-    "build": "cross-env NODE_OPTIONS=\"--no-deprecation --max-old-space-size=8000\" next build",
+    "build": "bash scripts/build.sh",
     "dev": "cross-env NODE_OPTIONS=--no-deprecation next dev",
     "generate:importmap": "cross-env NODE_OPTIONS=--no-deprecation payload generate:importmap",
     "generate:types": "cross-env NODE_OPTIONS=--no-deprecation payload generate:types",
@@ -14,7 +14,8 @@
     "typecheck": "tsc --noEmit",
     "import:legacy": "cross-env NODE_OPTIONS=--no-deprecation payload run scripts/import-legacy.ts --",
     "bloecke:startseite": "cross-env NODE_OPTIONS=--no-deprecation payload run scripts/startseite-zu-bloecken.ts --",
-    "db:kopie": "bash scripts/db-kopie.sh"
+    "db:kopie": "bash scripts/db-kopie.sh",
+    "migrate": "cross-env NODE_OPTIONS=--no-deprecation PAYLOAD_MIGRATING=true payload run scripts/migrate.ts --"
   },
   "dependencies": {
     "@payloadcms/db-postgres": "3.93.0",

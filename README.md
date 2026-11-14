@@ -23,8 +23,32 @@ pnpm dev
 ein absichtlich ungültiges `BLOB_READ_WRITE_TOKEN` mit der echten Store-ID (`vercel_blob_rw_<store-id>_nurlesen`):
 Bilder werden aus dem Prod-Store angezeigt, Hochladen und Löschen schlagen lokal fehl.
 
-Payload gleicht das Schema nur gegen eine lokale Datenbank automatisch ab. Gegen eine andere Datenbank nur mit
+Payload gleicht das Schema nur gegen eine lokale Datenbank automatisch ab («push»). Gegen eine andere Datenbank nur mit
 `PAYLOAD_PUSH=true` (siehe `src/payload.config.ts`).
+
+## Datenbank-Migrationen
+
+Prod bekommt Schemaänderungen nur über Migrationen (`src/migrations/`). Ablauf nach einer Feldänderung:
+
+```bash
+pnpm dev                                   # lokal entwickeln, Schema wird lokal gepusht
+pnpm payload migrate:create <name>         # Migration aus der Änderung erzeugen, prüfen, committen
+pnpm db:kopie && pnpm migrate              # optional: an einer frischen Prod-Kopie testen
+```
+
+Beim Vercel-Build läuft `pnpm migrate --prod` automatisch, aber nur für Production-Deployments
+(`scripts/build.sh`). Schlägt die Migration fehl, bricht der Build ab und die bisherige Version bleibt online.
+Preview-Builds und lokale Builds verändern die Datenbank nicht.
+
+`pnpm migrate` verweigert den Dienst, solange in `payload_migrations` ein «dev»-Eintrag steht (Schema per Push
+verändert). Lokal heisst das: vor dem Testen von Migrationen `pnpm db:kopie`.
+
+**Einmalig vor dem ersten Deploy mit Migrationen:** Das Prod-Schema ist bisher per Push entstanden und entspricht der
+Baseline-Migration. Die muss in Prod als ausgeführt markiert werden, mit der Prod-`DATABASE_URL`:
+
+```bash
+DATABASE_URL="<prod>" pnpm migrate --baseline --prod
+```
 
 Beim ersten Aufruf von `/admin` wird das erste Benutzerkonto angelegt.
 
