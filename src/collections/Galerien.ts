@@ -1,14 +1,24 @@
-import type { CollectionConfig } from 'payload'
+import type { CollectionAfterChangeHook, CollectionConfig } from 'payload'
 
 import { revalidateAfterChange, revalidateAfterDelete } from '../hooks/revalidate'
 import { slugField } from '../lib/fields'
+import { bilderEinordnen } from '../lib/ordner'
+
+/** Neue Bilder einer Galerie landen im Ordner «Fotogalerien › <Titel>». */
+const bilderInOrdner: CollectionAfterChangeHook = async ({ doc, req }) => {
+  await bilderEinordnen(req.payload, doc, req)
+  return doc
+}
 
 export const Galerien: CollectionConfig = {
   slug: 'galerien',
   labels: { singular: 'Fotogalerie', plural: 'Fotogalerien' },
   admin: { useAsTitle: 'titel', group: 'Archiv', defaultColumns: ['titel', 'datum'] },
   access: { read: () => true },
-  hooks: { afterChange: [revalidateAfterChange], afterDelete: [revalidateAfterDelete] },
+  hooks: {
+    afterChange: [bilderInOrdner, revalidateAfterChange],
+    afterDelete: [revalidateAfterDelete],
+  },
   defaultSort: '-datum',
   fields: [
     { name: 'titel', type: 'text', label: 'Titel', required: true },

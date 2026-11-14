@@ -62,6 +62,7 @@ Beim ersten Aufruf von `/admin` wird das erste Benutzerkonto angelegt.
 | Arbeitsgruppen | Collection «Arbeitsgruppen» (Block «Alle Arbeitsgruppen») | `/arbeitsgruppen/...` |
 | Protokolle, Bulletins, Fotogalerien | je eine Collection; Seiten `/archiv/...` aus Blöcken | `/archiv/...` |
 | Elternbox | Collection «Elternbox» (nur im Admin sichtbar) | `/elternbox` |
+| Bilder | Collection «Bilder» in Ordnern; Bilder einer Fotogalerie landen beim Speichern automatisch in «Fotogalerien › Titel» (`src/lib/ordner.ts`) | – |
 
 ## Blöcke
 

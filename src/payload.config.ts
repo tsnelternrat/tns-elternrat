@@ -43,6 +43,16 @@ export default buildConfig({
     importMap: { baseDir: path.resolve(dirname) },
     meta: { titleSuffix: ' · Elternrat TSN' },
   },
+  // Ordner für die Bilder (siehe Media.ts); die Ordner-Verwaltung steht im Menü bei den Dateien.
+  folders: {
+    collectionOverrides: [
+      ({ collection }) => ({
+        ...collection,
+        labels: { singular: 'Ordner', plural: 'Ordner' },
+        admin: { ...collection.admin, group: 'Dateien' },
+      }),
+    ],
+  },
   i18n: { supportedLanguages: { de }, fallbackLanguage: 'de' },
   // Die Reihenfolge hier bestimmt die Reihenfolge der Gruppen im Admin-Menü.
   collections: [

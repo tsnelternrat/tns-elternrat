@@ -22,6 +22,8 @@ export const Media: CollectionConfig = {
   slug: 'media',
   labels: { singular: 'Bild', plural: 'Bilder' },
   admin: { group: 'Dateien' },
+  // Ordner, z. B. einer pro Anlass; im Admin mit Kachelansicht («Nach Ordnern durchsuchen»).
+  folders: true,
   access: { read: () => true },
   hooks: { afterChange: [revalidateAfterChange], afterDelete: [revalidateAfterDelete] },
   fields: [
