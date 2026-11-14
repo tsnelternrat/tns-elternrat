@@ -2,6 +2,9 @@
 
 import { useCallback, useEffect, useRef, useState, ViewTransition } from 'react'
 
+/** So viele Vorschaubilder passen auf dem Handy etwa in den ersten Bildschirm. */
+const SOFORT = 6
+
 type Bild = { thumb: string; gross: string; alt: string }
 
 /** `uebergang`: Name, unter dem das erste Bild beim Seitenwechsel aus dem Vorschaubild der Übersicht hervorgeht. */
@@ -10,7 +13,8 @@ export function Galerie({ bilder, uebergang }: { bilder: Bild[]; uebergang?: str
   const [aktiv, setAktiv] = useState<number | null>(null)
 
   const weiter = useCallback(
-    (schritt: number) => setAktiv((i) => (i === null ? i : (i + schritt + bilder.length) % bilder.length)),
+    (schritt: number) =>
+      setAktiv((i) => (i === null ? i : (i + schritt + bilder.length) % bilder.length)),
     [bilder.length],
   )
 
@@ -36,13 +40,25 @@ export function Galerie({ bilder, uebergang }: { bilder: Bild[]; uebergang?: str
       <ul className="galerie">
         {bilder.map((b, i) => (
           <li key={b.gross}>
-            <button type="button" onClick={() => setAktiv(i)} aria-label={`Bild ${i + 1} von ${bilder.length} vergrössern`}>
+            <button
+              type="button"
+              onClick={() => setAktiv(i)}
+              aria-label={`Bild ${i + 1} von ${bilder.length} vergrössern`}
+            >
               {i === 0 && uebergang ? (
                 <ViewTransition name={uebergang} share="morph" default="none">
-                  <img src={b.thumb} alt={b.alt} width={480} height={480} />
+                  <img src={b.thumb} alt={b.alt} fetchPriority="high" width={480} height={480} />
                 </ViewTransition>
               ) : (
-                <img src={b.thumb} alt={b.alt} loading="lazy" width={480} height={480} />
+                // Die ersten Bilder sind sofort sichtbar und werden nicht verzögert geladen.
+                <img
+                  src={b.thumb}
+                  alt={b.alt}
+                  loading={i < SOFORT ? undefined : 'lazy'}
+                  fetchPriority={i === 0 ? 'high' : undefined}
+                  width={480}
+                  height={480}
+                />
               )}
             </button>
           </li>

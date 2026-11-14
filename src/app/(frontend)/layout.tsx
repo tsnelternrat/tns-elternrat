@@ -4,6 +4,7 @@ import Link from 'next/link'
 import React from 'react'
 
 import { Logo } from '@/components/Logo'
+import { blobBasis } from '@/lib/blob'
 import { payloadClient } from '@/lib/data'
 
 import './styles.css'
@@ -53,9 +54,12 @@ async function ladeNavigation() {
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const navigation = await ladeNavigation()
+  // Bilder und PDFs kommen aus dem Blob-Store: Verbindung früh aufbauen.
+  const blob = blobBasis()
   return (
     <html lang="de-CH" className={schrift.className}>
       <body>
+        {blob && <link rel="preconnect" href={blob} />}
         <a className="sprung" href="#inhalt">
           Zum Inhalt springen
         </a>

@@ -10,7 +10,10 @@ const dirname = path.dirname(__filename)
 const alteAdressen: [string, string][] = [
   ['/ueber-den-elternrat', '/elternrat'],
   ['/arbeitsgruppen/ag-bulletin', '/arbeitsgruppen#ag-bulletin'],
-  ['/arbeitsgruppen/ag-elternmitwirkung-auf-stadt-und-schulkreisebene', '/arbeitsgruppen#ag-elternkontaktgremium'],
+  [
+    '/arbeitsgruppen/ag-elternmitwirkung-auf-stadt-und-schulkreisebene',
+    '/arbeitsgruppen#ag-elternkontaktgremium',
+  ],
   ['/arbeitsgruppen/ag-weiterbildung', '/arbeitsgruppen#ag-elternbildung'],
   ['/arbeitsgruppen/ag-schueeli', '/arbeitsgruppen'],
   ['/arbeitsgruppen/ag-freiluftlabor', '/arbeitsgruppen'],
@@ -53,4 +56,20 @@ const nextConfig: NextConfig = {
   },
 }
 
-export default withPayload(nextConfig, { devBundleServerPackages: false })
+const konfig = withPayload(nextConfig, { devBundleServerPackages: false })
+const payloadHeaders = konfig.headers!
+
+/**
+ * withPayload setzt «Critical-CH: Sec-CH-Prefers-Color-Scheme» für alle Adressen. Chrome lädt dann jede
+ * Seite ein zweites Mal mit diesem Hinweis (in Lighthouse rund 1 s). Gebraucht wird er nur im Admin
+ * für das helle oder dunkle Theme, darum gilt er nur noch dort.
+ */
+export default {
+  ...konfig,
+  headers: async () =>
+    (await payloadHeaders()).map((regel) =>
+      regel.source === '/:path*' && regel.headers.some((h) => h.key === 'Critical-CH')
+        ? { ...regel, source: '/admin/:path*' }
+        : regel,
+    ),
+} satisfies NextConfig

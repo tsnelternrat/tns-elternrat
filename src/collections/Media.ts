@@ -1,22 +1,17 @@
 import type { CollectionConfig } from 'payload'
 
+import { blobBasis } from '../lib/blob'
 import { revalidateAfterChange, revalidateAfterDelete } from '../hooks/revalidate'
 
 /**
  * Adresse des Vorschaubilds im Admin. Payload setzt sonst /api/media/file/… ein; diese Route gibt es
  * mit disablePayloadAccessControl nicht (Fehler 500), darum zeigte der Admin nur Datei-Symbole.
- * Gleiche Basis-URL wie @payloadcms/storage-vercel-blob.
  */
 function vorschau({ doc }: { doc: Record<string, unknown> }) {
   const sizes = doc.sizes as { thumb?: { filename?: string | null } } | undefined
   const datei = sizes?.thumb?.filename || (doc.filename as string | undefined)
   if (!datei) return null
-  const store = process.env.BLOB_READ_WRITE_TOKEN?.match(
-    /^vercel_blob_rw_([a-z\d]+)_[a-z\d]+$/i,
-  )?.[1]
-  const basis =
-    process.env.STORAGE_VERCEL_BLOB_BASE_URL ||
-    (store ? `https://${store.toLowerCase()}.public.blob.vercel-storage.com` : '/api/media/file')
+  const basis = blobBasis() ?? '/api/media/file'
   return `${basis}/${encodeURIComponent(datei)}`
 }
 

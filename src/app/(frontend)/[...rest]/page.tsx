@@ -53,7 +53,11 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const seite = await ladeSeite(slugAus((await params).rest))
   return seite
-    ? { title: seite.navigationsTitel || seite.titel, description: seite.beschreibung ?? undefined }
+    ? {
+        title: seite.navigationsTitel || seite.titel,
+        // Nur mit Text setzen: auch «description: undefined» verdrängt die Standardbeschreibung aus dem Layout.
+        ...(seite.beschreibung ? { description: seite.beschreibung } : {}),
+      }
     : {}
 }
 

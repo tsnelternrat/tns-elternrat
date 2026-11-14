@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Sprechblase aus dem Logo (src/components/Logo.tsx), quadratisch. -->
+  <path fill="#8fb9b4" d="M12 10h48v34H38L24 58l4-14H12z"/>
+  <path fill="#fff" stroke="#141414" stroke-width="4" stroke-linejoin="miter" d="M4 4h48v34H30L16 52l4-14H4z"/>
+  <text x="28" y="28" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="800" fill="#141414">ER</text>
+</svg>
