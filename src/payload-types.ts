@@ -68,6 +68,7 @@ export interface Config {
   blocks: {};
   collections: {
     nachrichten: Nachrichten;
+    seiten: Seiten;
     arbeitsgruppen: Arbeitsgruppen;
     protokolle: Protokolle;
     bulletins: Bulletin;
@@ -83,6 +84,7 @@ export interface Config {
   collectionsJoins: {};
   collectionsSelect: {
     nachrichten: NachrichtenSelect<false> | NachrichtenSelect<true>;
+    seiten: SeitenSelect<false> | SeitenSelect<true>;
     arbeitsgruppen: ArbeitsgruppenSelect<false> | ArbeitsgruppenSelect<true>;
     protokolle: ProtokolleSelect<false> | ProtokolleSelect<true>;
     bulletins: BulletinsSelect<false> | BulletinsSelect<true>;
@@ -152,6 +154,304 @@ export interface Nachrichten {
   erledigt?: boolean | null;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * Frei aus Blöcken gebaute Seiten, erreichbar unter /adresse.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "seiten".
+ */
+export interface Seiten {
+  id: number;
+  titel: string;
+  /**
+   * Ausschalten, wenn der erste Block (z. B. eine Bühne) schon eine Überschrift hat.
+   */
+  titelZeigen?: boolean | null;
+  inhalt?:
+    | (
+        | BuehneBlock
+        | TextBlock
+        | BildTextBlock
+        | KartenBlock
+        | DownloadsBlock
+        | VideoBlock
+        | GalerieBlock
+        | AktuellBlock
+        | ListeBlock
+        | ArchivBlock
+      )[]
+    | null;
+  beschreibung?: string | null;
+  inNavigation?: boolean | null;
+  /**
+   * In der Navigation erscheinen kleinere Zahlen zuerst.
+   */
+  reihenfolge?: number | null;
+  /**
+   * Teil der Webadresse. Leer lassen, dann wird er aus dem Titel erzeugt.
+   */
+  slug?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BuehneBlock".
+ */
+export interface BuehneBlock {
+  titel: string;
+  text?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  bild?: (number | null) | Media;
+  knoepfe?:
+    | {
+        label: string;
+        /**
+         * Zum Beispiel /elternbox oder https://…
+         */
+        ziel: string;
+        stil?: ('voll' | 'hell') | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'buehne';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media".
+ */
+export interface Media {
+  id: number;
+  /**
+   * Kurze Beschreibung für Menschen, die das Bild nicht sehen können.
+   */
+  alt?: string | null;
+  _objectKey?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+  sizes?: {
+    thumb?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    mittel?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+  };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TextBlock".
+ */
+export interface TextBlock {
+  titel?: string | null;
+  text: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  breite?: ('schmal' | 'voll') | null;
+  gross?: boolean | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'text';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BildTextBlock".
+ */
+export interface BildTextBlock {
+  titel?: string | null;
+  text?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  bild: number | Media;
+  bildPosition?: ('rechts' | 'links') | null;
+  legende?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'bildText';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "KartenBlock".
+ */
+export interface KartenBlock {
+  titel?: string | null;
+  spalten?: ('2' | '3') | null;
+  karten?:
+    | {
+        titel: string;
+        text?: string | null;
+        linkLabel?: string | null;
+        linkZiel?: string | null;
+        farbig?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'karten';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "DownloadsBlock".
+ */
+export interface DownloadsBlock {
+  titel?: string | null;
+  dokumente: (number | Dokumente)[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'downloads';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "dokumente".
+ */
+export interface Dokumente {
+  id: number;
+  titel: string;
+  _objectKey?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "VideoBlock".
+ */
+export interface VideoBlock {
+  titel?: string | null;
+  url: string;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'video';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "GalerieBlock".
+ */
+export interface GalerieBlock {
+  titel?: string | null;
+  galerie: number | Galerien;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'galerie';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "galerien".
+ */
+export interface Galerien {
+  id: number;
+  titel: string;
+  datum: string;
+  /**
+   * Mehrere Bilder auf einmal hochladen oder auswählen.
+   */
+  bilder?: (number | Media)[] | null;
+  /**
+   * Teil der Webadresse. Leer lassen, dann wird er aus dem Titel erzeugt.
+   */
+  slug?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AktuellBlock".
+ */
+export interface AktuellBlock {
+  titel?: string | null;
+  /**
+   * Wird automatisch aktuell gehalten.
+   */
+  zeigen: ('bulletin' | 'protokoll' | 'galerie')[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'aktuell';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ListeBlock".
+ */
+export interface ListeBlock {
+  titel?: string | null;
+  quelle: 'protokolle' | 'bulletins' | 'galerien' | 'arbeitsgruppen';
+  anzahl?: number | null;
+  darstellung?: ('karten' | 'liste') | null;
+  /**
+   * Leer lassen für alle aktiven Arbeitsgruppen.
+   */
+  arbeitsgruppen?: (number | Arbeitsgruppen)[] | null;
+  linkAlle?: boolean | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'liste';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -225,23 +525,13 @@ export interface Arbeitsgruppen {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "dokumente".
+ * via the `definition` "ArchivBlock".
  */
-export interface Dokumente {
-  id: number;
-  titel: string;
-  _objectKey?: string | null;
-  updatedAt: string;
-  createdAt: string;
-  url?: string | null;
-  thumbnailURL?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-  focalX?: number | null;
-  focalY?: number | null;
+export interface ArchivBlock {
+  titel?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'archiv';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -305,66 +595,6 @@ export interface Bulletin {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "media".
- */
-export interface Media {
-  id: number;
-  /**
-   * Kurze Beschreibung für Menschen, die das Bild nicht sehen können.
-   */
-  alt?: string | null;
-  _objectKey?: string | null;
-  updatedAt: string;
-  createdAt: string;
-  url?: string | null;
-  thumbnailURL?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-  focalX?: number | null;
-  focalY?: number | null;
-  sizes?: {
-    thumb?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-    mittel?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-  };
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "galerien".
- */
-export interface Galerien {
-  id: number;
-  titel: string;
-  datum: string;
-  /**
-   * Mehrere Bilder auf einmal hochladen oder auswählen.
-   */
-  bilder?: (number | Media)[] | null;
-  /**
-   * Teil der Webadresse. Leer lassen, dann wird er aus dem Titel erzeugt.
-   */
-  slug?: string | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
 export interface User {
@@ -417,6 +647,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'nachrichten';
         value: number | Nachrichten;
+      } | null)
+    | ({
+        relationTo: 'seiten';
+        value: number | Seiten;
       } | null)
     | ({
         relationTo: 'arbeitsgruppen';
@@ -500,6 +734,161 @@ export interface NachrichtenSelect<T extends boolean = true> {
   erledigt?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "seiten_select".
+ */
+export interface SeitenSelect<T extends boolean = true> {
+  titel?: T;
+  titelZeigen?: T;
+  inhalt?:
+    | T
+    | {
+        buehne?: T | BuehneBlockSelect<T>;
+        text?: T | TextBlockSelect<T>;
+        bildText?: T | BildTextBlockSelect<T>;
+        karten?: T | KartenBlockSelect<T>;
+        downloads?: T | DownloadsBlockSelect<T>;
+        video?: T | VideoBlockSelect<T>;
+        galerie?: T | GalerieBlockSelect<T>;
+        aktuell?: T | AktuellBlockSelect<T>;
+        liste?: T | ListeBlockSelect<T>;
+        archiv?: T | ArchivBlockSelect<T>;
+      };
+  beschreibung?: T;
+  inNavigation?: T;
+  reihenfolge?: T;
+  slug?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BuehneBlock_select".
+ */
+export interface BuehneBlockSelect<T extends boolean = true> {
+  titel?: T;
+  text?: T;
+  bild?: T;
+  knoepfe?:
+    | T
+    | {
+        label?: T;
+        ziel?: T;
+        stil?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TextBlock_select".
+ */
+export interface TextBlockSelect<T extends boolean = true> {
+  titel?: T;
+  text?: T;
+  breite?: T;
+  gross?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BildTextBlock_select".
+ */
+export interface BildTextBlockSelect<T extends boolean = true> {
+  titel?: T;
+  text?: T;
+  bild?: T;
+  bildPosition?: T;
+  legende?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "KartenBlock_select".
+ */
+export interface KartenBlockSelect<T extends boolean = true> {
+  titel?: T;
+  spalten?: T;
+  karten?:
+    | T
+    | {
+        titel?: T;
+        text?: T;
+        linkLabel?: T;
+        linkZiel?: T;
+        farbig?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "DownloadsBlock_select".
+ */
+export interface DownloadsBlockSelect<T extends boolean = true> {
+  titel?: T;
+  dokumente?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "VideoBlock_select".
+ */
+export interface VideoBlockSelect<T extends boolean = true> {
+  titel?: T;
+  url?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "GalerieBlock_select".
+ */
+export interface GalerieBlockSelect<T extends boolean = true> {
+  titel?: T;
+  galerie?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AktuellBlock_select".
+ */
+export interface AktuellBlockSelect<T extends boolean = true> {
+  titel?: T;
+  zeigen?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ListeBlock_select".
+ */
+export interface ListeBlockSelect<T extends boolean = true> {
+  titel?: T;
+  quelle?: T;
+  anzahl?: T;
+  darstellung?: T;
+  arbeitsgruppen?: T;
+  linkAlle?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ArchivBlock_select".
+ */
+export interface ArchivBlockSelect<T extends boolean = true> {
+  titel?: T;
+  id?: T;
+  blockName?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -711,6 +1100,23 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
  */
 export interface Startseite {
   id: number;
+  /**
+   * Die Startseite besteht aus diesen Blöcken. Solange hier nichts steht, wird die bisherige feste Startseite gezeigt.
+   */
+  inhalt?:
+    | (
+        | BuehneBlock
+        | TextBlock
+        | BildTextBlock
+        | KartenBlock
+        | DownloadsBlock
+        | VideoBlock
+        | GalerieBlock
+        | AktuellBlock
+        | ListeBlock
+        | ArchivBlock
+      )[]
+    | null;
   titel: string;
   einleitung?: {
     root: {
@@ -795,6 +1201,23 @@ export interface Elternrat {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Blöcke, die unter der Liste der Personen erscheinen.
+   */
+  zusatz?:
+    | (
+        | BuehneBlock
+        | TextBlock
+        | BildTextBlock
+        | KartenBlock
+        | DownloadsBlock
+        | VideoBlock
+        | GalerieBlock
+        | AktuellBlock
+        | ListeBlock
+        | ArchivBlock
+      )[]
+    | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -819,6 +1242,52 @@ export interface Texte {
     };
     [k: string]: unknown;
   } | null;
+  /**
+   * Blöcke unter der Liste der Arbeitsgruppen.
+   */
+  arbeitsgruppenZusatz?:
+    | (
+        | BuehneBlock
+        | TextBlock
+        | BildTextBlock
+        | KartenBlock
+        | DownloadsBlock
+        | VideoBlock
+        | GalerieBlock
+        | AktuellBlock
+        | ListeBlock
+        | ArchivBlock
+      )[]
+    | null;
+  /**
+   * Steht auf der Archiv-Übersicht und oben auf der Seite «Protokolle».
+   */
+  protokolleEinleitung?: string | null;
+  /**
+   * Steht auf der Archiv-Übersicht und oben auf der Seite «Bulletins».
+   */
+  bulletinsEinleitung?: string | null;
+  /**
+   * Steht auf der Archiv-Übersicht und oben auf der Seite «Fotos».
+   */
+  fotosEinleitung?: string | null;
+  /**
+   * Blöcke unter den drei Archiv-Karten.
+   */
+  archivZusatz?:
+    | (
+        | BuehneBlock
+        | TextBlock
+        | BildTextBlock
+        | KartenBlock
+        | DownloadsBlock
+        | VideoBlock
+        | GalerieBlock
+        | AktuellBlock
+        | ListeBlock
+        | ArchivBlock
+      )[]
+    | null;
   elternboxEinleitung?: {
     root: {
       type: string;
@@ -835,21 +1304,26 @@ export interface Texte {
     [k: string]: unknown;
   } | null;
   /**
-   * Steht auf der Archiv-Übersicht und oben auf der Seite «Protokolle».
-   */
-  protokolleEinleitung?: string | null;
-  /**
-   * Steht auf der Archiv-Übersicht und oben auf der Seite «Bulletins».
-   */
-  bulletinsEinleitung?: string | null;
-  /**
-   * Steht auf der Archiv-Übersicht und oben auf der Seite «Fotos».
-   */
-  fotosEinleitung?: string | null;
-  /**
    * An diese Adressen geht eine E-Mail, sobald jemand in die Elternbox schreibt. Mehrere Adressen durch Komma trennen.
    */
   benachrichtigungsEmail?: string | null;
+  /**
+   * Blöcke unter dem Formular.
+   */
+  elternboxZusatz?:
+    | (
+        | BuehneBlock
+        | TextBlock
+        | BildTextBlock
+        | KartenBlock
+        | DownloadsBlock
+        | VideoBlock
+        | GalerieBlock
+        | AktuellBlock
+        | ListeBlock
+        | ArchivBlock
+      )[]
+    | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -858,6 +1332,20 @@ export interface Texte {
  * via the `definition` "startseite_select".
  */
 export interface StartseiteSelect<T extends boolean = true> {
+  inhalt?:
+    | T
+    | {
+        buehne?: T | BuehneBlockSelect<T>;
+        text?: T | TextBlockSelect<T>;
+        bildText?: T | BildTextBlockSelect<T>;
+        karten?: T | KartenBlockSelect<T>;
+        downloads?: T | DownloadsBlockSelect<T>;
+        video?: T | VideoBlockSelect<T>;
+        galerie?: T | GalerieBlockSelect<T>;
+        aktuell?: T | AktuellBlockSelect<T>;
+        liste?: T | ListeBlockSelect<T>;
+        archiv?: T | ArchivBlockSelect<T>;
+      };
   titel?: T;
   einleitung?: T;
   bild?: T;
@@ -897,6 +1385,20 @@ export interface ElternratSelect<T extends boolean = true> {
         personen?: T;
         id?: T;
       };
+  zusatz?:
+    | T
+    | {
+        buehne?: T | BuehneBlockSelect<T>;
+        text?: T | TextBlockSelect<T>;
+        bildText?: T | BildTextBlockSelect<T>;
+        karten?: T | KartenBlockSelect<T>;
+        downloads?: T | DownloadsBlockSelect<T>;
+        video?: T | VideoBlockSelect<T>;
+        galerie?: T | GalerieBlockSelect<T>;
+        aktuell?: T | AktuellBlockSelect<T>;
+        liste?: T | ListeBlockSelect<T>;
+        archiv?: T | ArchivBlockSelect<T>;
+      };
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
@@ -907,11 +1409,53 @@ export interface ElternratSelect<T extends boolean = true> {
  */
 export interface TexteSelect<T extends boolean = true> {
   arbeitsgruppenEinleitung?: T;
-  elternboxEinleitung?: T;
+  arbeitsgruppenZusatz?:
+    | T
+    | {
+        buehne?: T | BuehneBlockSelect<T>;
+        text?: T | TextBlockSelect<T>;
+        bildText?: T | BildTextBlockSelect<T>;
+        karten?: T | KartenBlockSelect<T>;
+        downloads?: T | DownloadsBlockSelect<T>;
+        video?: T | VideoBlockSelect<T>;
+        galerie?: T | GalerieBlockSelect<T>;
+        aktuell?: T | AktuellBlockSelect<T>;
+        liste?: T | ListeBlockSelect<T>;
+        archiv?: T | ArchivBlockSelect<T>;
+      };
   protokolleEinleitung?: T;
   bulletinsEinleitung?: T;
   fotosEinleitung?: T;
+  archivZusatz?:
+    | T
+    | {
+        buehne?: T | BuehneBlockSelect<T>;
+        text?: T | TextBlockSelect<T>;
+        bildText?: T | BildTextBlockSelect<T>;
+        karten?: T | KartenBlockSelect<T>;
+        downloads?: T | DownloadsBlockSelect<T>;
+        video?: T | VideoBlockSelect<T>;
+        galerie?: T | GalerieBlockSelect<T>;
+        aktuell?: T | AktuellBlockSelect<T>;
+        liste?: T | ListeBlockSelect<T>;
+        archiv?: T | ArchivBlockSelect<T>;
+      };
+  elternboxEinleitung?: T;
   benachrichtigungsEmail?: T;
+  elternboxZusatz?:
+    | T
+    | {
+        buehne?: T | BuehneBlockSelect<T>;
+        text?: T | TextBlockSelect<T>;
+        bildText?: T | BildTextBlockSelect<T>;
+        karten?: T | KartenBlockSelect<T>;
+        downloads?: T | DownloadsBlockSelect<T>;
+        video?: T | VideoBlockSelect<T>;
+        galerie?: T | GalerieBlockSelect<T>;
+        aktuell?: T | AktuellBlockSelect<T>;
+        liste?: T | ListeBlockSelect<T>;
+        archiv?: T | ArchivBlockSelect<T>;
+      };
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

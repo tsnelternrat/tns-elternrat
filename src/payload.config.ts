@@ -15,6 +15,7 @@ import { Galerien } from './collections/Galerien'
 import { Media } from './collections/Media'
 import { Nachrichten } from './collections/Nachrichten'
 import { Protokolle } from './collections/Protokolle'
+import { Seiten } from './collections/Seiten'
 import { Users } from './collections/Users'
 import { Elternrat } from './globals/Elternrat'
 import { Startseite } from './globals/Startseite'
@@ -22,6 +23,16 @@ import { Texte } from './globals/Texte'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
+
+const datenbank = process.env.DATABASE_URL || ''
+
+/**
+ * Payload gleicht im Entwicklungsmodus das Datenbankschema automatisch an die Felder an («push»).
+ * Gegen die produktive Datenbank wäre das bei jedem geänderten Feld ein Eingriff in Prod.
+ * Deshalb nur bei einer lokalen Datenbank (docker-compose.yml), sonst nur mit PAYLOAD_PUSH=true.
+ */
+const lokaleDatenbank = /@(localhost|127\.0\.0\.1)[:/]/.test(datenbank)
+const schemaAbgleich = lokaleDatenbank || process.env.PAYLOAD_PUSH === 'true'
 
 // Alle Dateien sind öffentlich: Links zeigen direkt auf den Blob-Store statt über Payload zu laufen.
 const direkt = { disablePayloadAccessControl: true } as const
@@ -34,13 +45,24 @@ export default buildConfig({
   },
   i18n: { supportedLanguages: { de }, fallbackLanguage: 'de' },
   // Die Reihenfolge hier bestimmt die Reihenfolge der Gruppen im Admin-Menü.
-  collections: [Nachrichten, Arbeitsgruppen, Protokolle, Bulletins, Galerien, Media, Dokumente, Users],
+  collections: [
+    Nachrichten,
+    Seiten,
+    Arbeitsgruppen,
+    Protokolle,
+    Bulletins,
+    Galerien,
+    Media,
+    Dokumente,
+    Users,
+  ],
   globals: [Startseite, Elternrat, Texte],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: { outputFile: path.resolve(dirname, 'payload-types.ts') },
   db: postgresAdapter({
-    pool: { connectionString: process.env.DATABASE_URL || '' },
+    pool: { connectionString: datenbank },
+    push: schemaAbgleich,
   }),
   // Ohne RESEND_API_KEY werden keine E-Mails verschickt; Elternbox-Nachrichten landen dann nur im Admin.
   email: process.env.RESEND_API_KEY

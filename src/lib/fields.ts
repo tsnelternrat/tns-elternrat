@@ -14,12 +14,14 @@ export const schuljahrField: Field = {
   admin: { description: 'Zum Beispiel 2025/26. Danach wird im Archiv gruppiert.' },
 }
 
-export const slugField = (quelle: string): Field => ({
+/** `pruefen`: zusätzliche Prüfung des fertigen Slugs, gibt true oder eine Fehlermeldung zurück. */
+export const slugField = (quelle: string, pruefen?: (wert: unknown) => true | string): Field => ({
   name: 'slug',
   type: 'text',
   label: 'Adresse (Slug)',
   unique: true,
   index: true,
+  ...(pruefen && { validate: pruefen }),
   admin: {
     position: 'sidebar',
     description: 'Teil der Webadresse. Leer lassen, dann wird er aus dem Titel erzeugt.',

@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 
+import { Bloecke } from '@/components/bloecke/Bloecke'
 import { DownloadListe } from '@/components/Download'
 import { Text } from '@/components/Text'
 import { alsDokument, alsListe, bildUrl, payloadClient } from '@/lib/data'
@@ -17,7 +18,7 @@ const stufen = [
 
 export default async function ElternratSeite() {
   const payload = await payloadClient()
-  const er = await payload.findGlobal({ slug: 'elternrat', depth: 1 })
+  const er = await payload.findGlobal({ slug: 'elternrat', depth: 2 })
   const foto = alsDokument<Media>(er.foto)
   const fotoUrl = bildUrl(foto, 'mittel')
   const dokumente = alsListe<Dokumente>(er.dokumente)
@@ -91,8 +92,11 @@ export default async function ElternratSeite() {
             </dl>
           </>
         )}
-        <p className="hinweis">Mit Fragen und Wünschen wenden Sie sich am besten an die Delegierten Ihrer Klasse.</p>
+        <p className="hinweis">
+          Mit Fragen und Wünschen wenden Sie sich am besten an die Delegierten Ihrer Klasse.
+        </p>
       </section>
+      <Bloecke bloecke={er.zusatz} />
     </Seite>
   )
 }

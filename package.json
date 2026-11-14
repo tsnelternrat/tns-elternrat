@@ -12,7 +12,9 @@
     "payload": "cross-env NODE_OPTIONS=--no-deprecation payload",
     "start": "cross-env NODE_OPTIONS=--no-deprecation next start",
     "typecheck": "tsc --noEmit",
-    "import:legacy": "cross-env NODE_OPTIONS=--no-deprecation payload run scripts/import-legacy.ts --"
+    "import:legacy": "cross-env NODE_OPTIONS=--no-deprecation payload run scripts/import-legacy.ts --",
+    "bloecke:startseite": "cross-env NODE_OPTIONS=--no-deprecation payload run scripts/startseite-zu-bloecken.ts --",
+    "db:kopie": "bash scripts/db-kopie.sh"
   },
   "dependencies": {
     "@payloadcms/db-postgres": "3.93.0",

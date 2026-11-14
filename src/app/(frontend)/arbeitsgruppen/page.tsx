@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 
+import { Bloecke } from '@/components/bloecke/Bloecke'
 import { Text } from '@/components/Text'
 import { hatDetailseite, payloadClient } from '@/lib/data'
 import { Seite } from '@/components/Seite'
@@ -11,7 +12,7 @@ export const metadata: Metadata = { title: 'Arbeitsgruppen' }
 export default async function ArbeitsgruppenSeite() {
   const payload = await payloadClient()
   const [texte, ags] = await Promise.all([
-    payload.findGlobal({ slug: 'texte', depth: 0 }),
+    payload.findGlobal({ slug: 'texte', depth: 2 }),
     payload.find({ collection: 'arbeitsgruppen', sort: 'reihenfolge', limit: 100, depth: 0 }),
   ])
 
@@ -39,8 +40,10 @@ export default async function ArbeitsgruppenSeite() {
         ))}
       </div>
       <p className="hinweis">
-        Möchten Sie in einer Arbeitsgruppe mitmachen? <Link href="/elternbox">Schreiben Sie uns in die Elternbox.</Link>
+        Möchten Sie in einer Arbeitsgruppe mitmachen?{' '}
+        <Link href="/elternbox">Schreiben Sie uns in die Elternbox.</Link>
       </p>
+      <Bloecke bloecke={texte.arbeitsgruppenZusatz} />
     </Seite>
   )
 }

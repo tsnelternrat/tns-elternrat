@@ -375,6 +375,42 @@ figcaption {
   border: 2px solid var(--tinte);
 }
 
+/* Blöcke (src/components/bloecke) */
+section > .karten-zwei {
+  margin-top: 0;
+}
+
+@media (min-width: 52rem) {
+  .spalten-bild-links {
+    grid-template-columns: 0.9fr 1.1fr;
+  }
+
+  .spalten-bild-links > figure {
+    order: -1;
+  }
+}
+
+.mehr {
+  margin-top: 1.5rem;
+  font-weight: 700;
+}
+
+.linkliste {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.linkliste li {
+  padding-block: 0.55rem;
+  border-bottom: 1.5px solid var(--salbei-hell);
+}
+
+.leise {
+  color: var(--tinte-leise);
+  font-size: 0.9rem;
+}
+
 /* Fliesstext aus dem CMS */
 .text > :last-child {
   margin-bottom: 0;

@@ -1,0 +1,15 @@
+# Lokale Datenbank für die Entwicklung, getrennt von der produktiven Neon-Datenbank.
+# Starten: docker compose up -d   ·   Prod-Daten kopieren: pnpm db:kopie
+services:
+  db:
+    image: postgres:18
+    environment:
+      POSTGRES_USER: payload
+      POSTGRES_PASSWORD: payload
+      POSTGRES_DB: elternrat
+    ports:
+      - '54329:5432'
+    volumes:
+      - db:/var/lib/postgresql
+volumes:
+  db:

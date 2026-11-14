@@ -1,12 +1,16 @@
 import type { GlobalConfig } from 'payload'
 
+import { inhaltField } from '../blocks'
 import { revalidateGlobal } from '../hooks/revalidate'
 import { schuljahrField } from '../lib/fields'
 
 export const Elternrat: GlobalConfig = {
   slug: 'elternrat',
   label: 'Elternrat',
-  admin: { group: 'Inhalte', description: 'Seite «Elternrat»: Einleitung, Vorstand und Delegierte.' },
+  admin: {
+    group: 'Inhalte',
+    description: 'Seite «Elternrat»: Einleitung, Vorstand und Delegierte.',
+  },
   access: { read: () => true },
   hooks: { afterChange: [revalidateGlobal] },
   fields: [
@@ -44,7 +48,13 @@ export const Elternrat: GlobalConfig = {
                 {
                   type: 'row',
                   fields: [
-                    { name: 'rolle', type: 'text', label: 'Amt', required: true, admin: { width: '40%' } },
+                    {
+                      name: 'rolle',
+                      type: 'text',
+                      label: 'Amt',
+                      required: true,
+                      admin: { width: '40%' },
+                    },
                     { name: 'personen', type: 'text', label: 'Person(en)', required: true },
                   ],
                 },
@@ -99,12 +109,28 @@ export const Elternrat: GlobalConfig = {
                 {
                   type: 'row',
                   fields: [
-                    { name: 'rolle', type: 'text', label: 'Aufgabe', required: true, admin: { width: '40%' } },
+                    {
+                      name: 'rolle',
+                      type: 'text',
+                      label: 'Aufgabe',
+                      required: true,
+                      admin: { width: '40%' },
+                    },
                     { name: 'personen', type: 'text', label: 'Person(en)', required: true },
                   ],
                 },
               ],
             },
+          ],
+        },
+        {
+          label: 'Weitere Inhalte',
+          fields: [
+            inhaltField(
+              'zusatz',
+              'Weitere Inhalte',
+              'Blöcke, die unter der Liste der Personen erscheinen.',
+            ),
           ],
         },
       ],
