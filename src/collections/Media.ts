@@ -11,12 +11,16 @@ function vorschau({ doc }: { doc: Record<string, unknown> }) {
   const sizes = doc.sizes as { thumb?: { filename?: string | null } } | undefined
   const datei = sizes?.thumb?.filename || (doc.filename as string | undefined)
   if (!datei) return null
-  const store = process.env.BLOB_READ_WRITE_TOKEN?.match(/^vercel_blob_rw_([a-z\d]+)_[a-z\d]+$/i)?.[1]
+  const store = process.env.BLOB_READ_WRITE_TOKEN?.match(
+    /^vercel_blob_rw_([a-z\d]+)_[a-z\d]+$/i,
+  )?.[1]
   const basis =
     process.env.STORAGE_VERCEL_BLOB_BASE_URL ||
     (store ? `https://${store.toLowerCase()}.public.blob.vercel-storage.com` : '/api/media/file')
   return `${basis}/${encodeURIComponent(datei)}`
 }
+
+export const webp = { format: 'webp', options: { quality: 80 } } as const
 
 export const Media: CollectionConfig = {
   slug: 'media',
@@ -38,9 +42,11 @@ export const Media: CollectionConfig = {
     mimeTypes: ['image/*'],
     // Originale werden beim Hochladen verkleinert, Handyfotos sind sonst mehrere MB gross.
     resizeOptions: { width: 2400, height: 2400, fit: 'inside', withoutEnlargement: true },
+    // Die Website zeigt nur diese Grössen, als WebP (etwa ein Drittel kleiner als JPEG).
+    // Bestehende Bilder umrechnen: scripts/webp-umrechnen.ts (gleiche Einstellungen).
     imageSizes: [
-      { name: 'thumb', width: 480, height: 480, fit: 'cover' },
-      { name: 'mittel', width: 1200, withoutEnlargement: true },
+      { name: 'thumb', width: 480, height: 480, fit: 'cover', formatOptions: webp },
+      { name: 'mittel', width: 1200, withoutEnlargement: true, formatOptions: webp },
     ],
     adminThumbnail: vorschau,
   },

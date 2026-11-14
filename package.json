@@ -15,7 +15,8 @@
     "import:legacy": "cross-env NODE_OPTIONS=--no-deprecation payload run scripts/import-legacy.ts --",
     "bloecke:ueberfuehren": "cross-env NODE_OPTIONS=--no-deprecation payload run scripts/bloecke-ueberfuehren.ts --",
     "db:kopie": "bash scripts/db-kopie.sh",
-    "migrate": "cross-env NODE_OPTIONS=--no-deprecation PAYLOAD_MIGRATING=true payload run scripts/migrate.ts --"
+    "migrate": "cross-env NODE_OPTIONS=--no-deprecation PAYLOAD_MIGRATING=true payload run scripts/migrate.ts --",
+    "webp": "cross-env NODE_OPTIONS=--no-deprecation payload run scripts/webp-umrechnen.ts --"
   },
   "dependencies": {
     "@payloadcms/db-postgres": "3.93.0",
@@ -39,6 +40,7 @@
     "@types/node": "22.19.9",
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
+    "@vercel/blob": "2.3.1",
     "eslint": "^9.16.0",
     "eslint-config-next": "16.4.1",
     "jsdom": "28.0.0",
