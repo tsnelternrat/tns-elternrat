@@ -8,88 +8,26 @@ export const adressen = (wert: unknown): string[] =>
     .split(/[,;\s]+/)
     .filter(Boolean)
 
+/** Slug bleibt «texte» (Tabellenname); im Admin heisst das Global «Einstellungen». */
 export const Texte: GlobalConfig = {
   slug: 'texte',
   label: 'Einstellungen',
   admin: { group: 'Einstellungen' },
   access: { read: () => true },
   hooks: { afterChange: [revalidateGlobal] },
-  // Die Reiter dienen nur der Übersicht im Admin; die Felder liegen weiterhin direkt im Global.
   fields: [
     {
-      type: 'tabs',
-      tabs: [
-        {
-          label: 'Arbeitsgruppen',
-          fields: [
-            {
-              name: 'arbeitsgruppenEinleitung',
-              type: 'richText',
-              label: 'Einleitung der Seite «Arbeitsgruppen»',
-              admin: {
-                description:
-                  'Vorlage, solange unter «Seiten» kein Eintrag für diese Seite besteht.',
-              },
-            },
-          ],
-        },
-        {
-          label: 'Archiv',
-          fields: [
-            {
-              name: 'protokolleEinleitung',
-              type: 'textarea',
-              label: 'Kurztext zu den Protokollen',
-              admin: {
-                description: 'Steht auf der Archiv-Übersicht und oben auf der Seite «Protokolle».',
-              },
-            },
-            {
-              name: 'bulletinsEinleitung',
-              type: 'textarea',
-              label: 'Kurztext zu den Bulletins',
-              admin: {
-                description: 'Steht auf der Archiv-Übersicht und oben auf der Seite «Bulletins».',
-              },
-            },
-            {
-              name: 'fotosEinleitung',
-              type: 'textarea',
-              label: 'Kurztext zu den Fotos',
-              admin: {
-                description: 'Steht auf der Archiv-Übersicht und oben auf der Seite «Fotos».',
-              },
-            },
-          ],
-        },
-        {
-          label: 'Elternbox',
-          fields: [
-            {
-              name: 'elternboxEinleitung',
-              type: 'richText',
-              label: 'Einleitung der Elternbox',
-              admin: {
-                description:
-                  'Vorlage, solange unter «Seiten» kein Eintrag für diese Seite besteht.',
-              },
-            },
-            {
-              name: 'benachrichtigungsEmail',
-              type: 'text',
-              label: 'Benachrichtigung an',
-              access: { read: ({ req }) => Boolean(req.user) },
-              validate: (wert: unknown) =>
-                adressen(wert).every((a) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(a)) ||
-                'Bitte gültige E-Mail-Adressen angeben, mehrere durch Komma getrennt.',
-              admin: {
-                description:
-                  'An diese Adressen geht eine E-Mail, sobald jemand in die Elternbox schreibt. Mehrere Adressen durch Komma trennen.',
-              },
-            },
-          ],
-        },
-      ],
+      name: 'benachrichtigungsEmail',
+      type: 'text',
+      label: 'Benachrichtigung an',
+      access: { read: ({ req }) => Boolean(req.user) },
+      validate: (wert: unknown) =>
+        adressen(wert).every((a) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(a)) ||
+        'Bitte gültige E-Mail-Adressen angeben, mehrere durch Komma getrennt.',
+      admin: {
+        description:
+          'An diese Adressen geht eine E-Mail, sobald jemand in die Elternbox schreibt. Mehrere Adressen durch Komma trennen.',
+      },
     },
   ],
 }

@@ -60,7 +60,7 @@ Beim ersten Aufruf von `/admin` wird das erste Benutzerkonto angelegt.
 | Elternrat, Arbeitsgruppen, Archiv, Elternbox und weitere Seiten | Collection «Seiten», aus Blöcken | `/adresse` |
 | Vorstand und Delegierte | Global «Elternrat» (Block «Vorstand und Delegierte») | `/elternrat` |
 | Arbeitsgruppen | Collection «Arbeitsgruppen» (Block «Alle Arbeitsgruppen») | `/arbeitsgruppen/...` |
-| Protokolle, Bulletins, Fotogalerien | je eine Collection | `/archiv/...` |
+| Protokolle, Bulletins, Fotogalerien | je eine Collection; Seiten `/archiv/...` aus Blöcken | `/archiv/...` |
 | Elternbox | Collection «Elternbox» (nur im Admin sichtbar) | `/elternbox` |
 
 ## Blöcke
@@ -82,7 +82,7 @@ Nach jeder Änderung im Admin wird die Website neu gerendert (`src/hooks/revalid
 - **Datenbank:** Neon Postgres (`tsn-elternrat-db`), über den Vercel Marketplace mit dem Projekt verbunden.
 - **Dateien:** Vercel Blob (`tsn-elternrat-media`). Uploads gehen direkt vom Browser in den Store.
 - **E-Mail:** Ist `RESEND_API_KEY` gesetzt, meldet die Elternbox neue Nachrichten per E-Mail an die Adresse
-  aus «Texte und Einstellungen». Ohne Schlüssel landen Nachrichten nur im Admin. Absender: `EMAIL_FROM`.
+  aus dem Global «Einstellungen». Ohne Schlüssel landen Nachrichten nur im Admin. Absender: `EMAIL_FROM`.
 - `NEXT_PUBLIC_SERVER_URL` (z. B. `https://tsn-elternrat.ch`) wird für den Admin-Link in der E-Mail verwendet.
 
 

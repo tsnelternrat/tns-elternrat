@@ -8,7 +8,7 @@ export const revalidate = false
 export default async function Startseite() {
   const payload = await payloadClient()
   const seite = await payload.findGlobal({ slug: 'startseite', depth: 2 })
-  const bloecke = seite.inhalt?.length ? seite.inhalt : standardStartseite(seite)
+  const bloecke = seite.inhalt?.length ? seite.inhalt : standardStartseite()
 
   return (
     <Seite>

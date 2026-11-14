@@ -66,7 +66,6 @@ function bereinige(wurzel: Element | Document): string {
   return kopie.innerHTML.trim()
 }
 
-const absaetze = (texte: string[]) => texte.map((t) => `<p>${t}</p>`).join('')
 
 async function main() {
   const payload = await getPayload({ config })
@@ -115,8 +114,6 @@ async function main() {
   // ---------------------------------------------------------------- Elternrat
   {
     const dok = seite('ueber-den-elternrat')
-    const ps = Array.from(dok.querySelectorAll('p'))
-    const einleitung = ps.find((p) => p.textContent?.includes('offizielles Organ'))
     // Die Liste steht in wenigen Absätzen mit <br> dazwischen
     const roh = new JSDOM(lies('pages/ueber-den-elternrat.html').replace(/<br\s*\/?>|<\/p>|<\/h\d>/gi, '\n'))
     const zeilen = (roh.window.document.body.textContent ?? '')
@@ -139,31 +136,15 @@ async function main() {
         klassen.push({ stufe: 'mittelstufe', klasse: rolle.replace(/^4\.-6\. Klasse /, ''), delegierte: personen })
       else if (/gruppe/i.test(rolle)) weitere.push({ rolle, personen })
     }
-    const legende = Array.from(dok.querySelectorAll('strong'))
-      .find((el) => /Schuljahres \d{4}/.test(el.textContent ?? ''))
-      ?.textContent?.trim()
     const jahr = (dok.body.textContent ?? '').match(/Elternrat (\d{4})\/(\d{2})/)
     if (nurPersonen) {
-      await payload.updateGlobal({ slug: 'elternrat', data: { vorstand, klassen, weitere, fotoLegende: legende } })
+      await payload.updateGlobal({ slug: 'elternrat', data: { vorstand, klassen, weitere } })
       console.log(`Elternrat: ${vorstand.length} Ämter, ${klassen.length} Klassen, ${weitere.length} weitere`)
       process.exit(0)
     }
-    const fotoSrc = dok.querySelector('img')?.getAttribute('src')
-    const dokumente = [
-      await dokument('https://tsn-elternrat.ch/wp-content/uploads/2023/03/er_flyer.pdf', 'Flyer Elternrat'),
-      await dokument(
-        'https://tsn-elternrat.ch/wp-content/uploads/2015/12/Elternrat-Konzept-2015.pdf',
-        'Konzept Elternrat (2015)',
-      ),
-    ].filter((d): d is number => d !== null)
-
     await payload.updateGlobal({
       slug: 'elternrat',
       data: {
-        einleitung: lexical(einleitung ? `<p>${bereinige(einleitung)}</p>` : ''),
-        foto: fotoSrc ? await bild(fotoSrc, 'Gruppenfoto des Elternrats', 'Gruppenfoto') : undefined,
-        fotoLegende: legende,
-        dokumente,
         schuljahr: jahr ? `${jahr[1]}/${jahr[2]}` : schuljahrVon(new Date()),
         vorstand,
         klassen,
@@ -173,31 +154,8 @@ async function main() {
     console.log(`Elternrat: ${vorstand.length} Ämter, ${klassen.length} Klassen, ${weitere.length} weitere`)
   }
 
-  // ---------------------------------------------------------------- Startseite und Texte
-  await payload.updateGlobal({
-    slug: 'startseite',
-    data: {
-      titel: 'Willkommen beim Elternrat',
-      // Texte aus dem Startseiten-Entwurf von 2021 und aus Struktur.md; als Platzhalter gedacht.
-      einleitung: lexical(
-        absaetze([
-          'Willkommen auf der Website des Elternrats der Tagesschule Nordstrasse, der Quartierschule in Zürich Wipkingen.',
-          'Der Elternrat dient dem Gedankenaustausch über Erziehung in Schule und Familie, der Förderung der Schulhauskultur, der Integration der multikulturellen Vielfalt, der Diskussion aktueller Themen sowie der Suche nach möglicher Mithilfe beim Lösen anstehender Probleme.',
-        ]),
-      ),
-    },
-  })
-  {
-    const ag = seite('arbeitsgruppen')
-    const erster = ag.querySelector('p')
-    await payload.updateGlobal({
-      slug: 'texte',
-      data: {
-        arbeitsgruppenEinleitung: lexical(erster ? `<p>${bereinige(erster)}</p>` : ''),
-        elternboxEinleitung: lexical(bereinige(seite('kontakt')).replace(/<div[\s\S]*$/, '')),
-      },
-    })
-  }
+  // Einleitungen, Gruppenfoto, Flyer/Konzept und Startseite stehen seit Nov. 2026 in Blöcken (Collection «Seiten»,
+  // Global «Startseite») und werden hier nicht mehr importiert. Grundgerüst: pnpm bloecke:ueberfuehren.
 
   // ---------------------------------------------------------------- Arbeitsgruppen
   const ags: { name: string; quelle: string }[] = [

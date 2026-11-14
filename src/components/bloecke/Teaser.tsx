@@ -297,8 +297,7 @@ export async function ArchivTeaser({
   fotosText,
 }: ArchivBlock) {
   const payload = await payloadClient()
-  const [texte, protokolle, bulletins, galerien] = await Promise.all([
-    payload.findGlobal({ slug: 'texte', depth: 0 }),
+  const [protokolle, bulletins, galerien] = await Promise.all([
     payload.count({ collection: 'protokolle' }),
     payload.count({ collection: 'bulletins' }),
     payload.count({ collection: 'galerien' }),
@@ -307,19 +306,19 @@ export async function ArchivTeaser({
     {
       href: '/archiv/protokolle',
       titel: 'Protokolle',
-      text: protokolleText ?? texte.protokolleEinleitung,
+      text: protokolleText,
       anzahl: `${protokolle.totalDocs} Protokolle`,
     },
     {
       href: '/archiv/bulletins',
       titel: 'Bulletins',
-      text: bulletinsText ?? texte.bulletinsEinleitung,
+      text: bulletinsText,
       anzahl: `${bulletins.totalDocs} Ausgaben`,
     },
     {
       href: '/archiv/fotos',
       titel: 'Fotos',
-      text: fotosText ?? texte.fotosEinleitung,
+      text: fotosText,
       anzahl: `${galerien.totalDocs} Galerien`,
     },
   ]

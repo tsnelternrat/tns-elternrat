@@ -1221,7 +1221,7 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
 export interface Startseite {
   id: number;
   /**
-   * Die Startseite besteht aus diesen Blöcken. Solange hier nichts steht, wird die bisherige feste Startseite gezeigt.
+   * Die Startseite besteht aus diesen Blöcken. Solange hier nichts steht, wird eine einfache Standard-Startseite gezeigt.
    */
   inhalt?:
     | (
@@ -1241,55 +1241,17 @@ export interface Startseite {
         | ElternboxBlock
       )[]
     | null;
-  titel: string;
-  einleitung?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  bild?: (number | null) | Media;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
 /**
- * Seite «Elternrat»: Einleitung, Vorstand und Delegierte.
+ * Vorstand und Delegierte. Auf der Website angezeigt über den Block «Vorstand und Delegierte».
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "elternrat".
  */
 export interface Elternrat {
   id: number;
-  einleitung?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  foto?: (number | null) | Media;
-  fotoLegende?: string | null;
-  /**
-   * Zum Beispiel Flyer und Konzept.
-   */
-  dokumente?: (number | Dokumente)[] | null;
   /**
    * Zum Beispiel 2025/26. Danach wird im Archiv gruppiert.
    */
@@ -1335,54 +1297,6 @@ export interface Elternrat {
 export interface Texte {
   id: number;
   /**
-   * Vorlage, solange unter «Seiten» kein Eintrag für diese Seite besteht.
-   */
-  arbeitsgruppenEinleitung?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  /**
-   * Steht auf der Archiv-Übersicht und oben auf der Seite «Protokolle».
-   */
-  protokolleEinleitung?: string | null;
-  /**
-   * Steht auf der Archiv-Übersicht und oben auf der Seite «Bulletins».
-   */
-  bulletinsEinleitung?: string | null;
-  /**
-   * Steht auf der Archiv-Übersicht und oben auf der Seite «Fotos».
-   */
-  fotosEinleitung?: string | null;
-  /**
-   * Vorlage, solange unter «Seiten» kein Eintrag für diese Seite besteht.
-   */
-  elternboxEinleitung?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  /**
    * An diese Adressen geht eine E-Mail, sobald jemand in die Elternbox schreibt. Mehrere Adressen durch Komma trennen.
    */
   benachrichtigungsEmail?: string | null;
@@ -1412,9 +1326,6 @@ export interface StartseiteSelect<T extends boolean = true> {
         arbeitsgruppen?: T | ArbeitsgruppenBlockSelect<T>;
         elternbox?: T | ElternboxBlockSelect<T>;
       };
-  titel?: T;
-  einleitung?: T;
-  bild?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
@@ -1424,10 +1335,6 @@ export interface StartseiteSelect<T extends boolean = true> {
  * via the `definition` "elternrat_select".
  */
 export interface ElternratSelect<T extends boolean = true> {
-  einleitung?: T;
-  foto?: T;
-  fotoLegende?: T;
-  dokumente?: T;
   schuljahr?: T;
   vorstand?:
     | T
@@ -1460,11 +1367,6 @@ export interface ElternratSelect<T extends boolean = true> {
  * via the `definition` "texte_select".
  */
 export interface TexteSelect<T extends boolean = true> {
-  arbeitsgruppenEinleitung?: T;
-  protokolleEinleitung?: T;
-  bulletinsEinleitung?: T;
-  fotosEinleitung?: T;
-  elternboxEinleitung?: T;
   benachrichtigungsEmail?: T;
   updatedAt?: T;
   createdAt?: T;

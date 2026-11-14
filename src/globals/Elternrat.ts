@@ -8,7 +8,8 @@ export const Elternrat: GlobalConfig = {
   label: 'Elternrat',
   admin: {
     group: 'Inhalte',
-    description: 'Seite «Elternrat»: Einleitung, Vorstand und Delegierte.',
+    description:
+      'Vorstand und Delegierte. Auf der Website angezeigt über den Block «Vorstand und Delegierte».',
   },
   access: { read: () => true },
   hooks: { afterChange: [revalidateGlobal] },
@@ -16,24 +17,6 @@ export const Elternrat: GlobalConfig = {
     {
       type: 'tabs',
       tabs: [
-        {
-          label: 'Bisherige Seite',
-          description:
-            'Vorlage für die Seite «Elternrat», solange unter «Seiten» kein Eintrag dafür besteht.',
-          fields: [
-            { name: 'einleitung', type: 'richText', label: 'Einleitung' },
-            { name: 'foto', type: 'upload', relationTo: 'media', label: 'Gruppenfoto' },
-            { name: 'fotoLegende', type: 'text', label: 'Bildlegende' },
-            {
-              name: 'dokumente',
-              type: 'relationship',
-              relationTo: 'dokumente',
-              hasMany: true,
-              label: 'Dokumente zum Herunterladen',
-              admin: { description: 'Zum Beispiel Flyer und Konzept.' },
-            },
-          ],
-        },
         {
           label: 'Vorstand und Delegierte',
           description: 'Zu Beginn jedes Schuljahres anpassen.',
