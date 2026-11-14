@@ -19,6 +19,10 @@ const begrenzung = (anzahl?: number) =>
 
 type Darstellung = NonNullable<ListeBlock['darstellung']>
 
+/** Überschrift der Einträge: eine Stufe unter dem Blocktitel, ohne Blocktitel direkt h2. */
+type Kopf = 'h2' | 'h3'
+const kopfUnter = (titel?: string | null): Kopf => (titel ? 'h3' : 'h2')
+
 /**
  * Blöcke, die ihren Inhalt selbst aus den Collections holen und so immer aktuell sind.
  * Nach jeder Änderung im Admin wird die ganze Website neu erzeugt (src/hooks/revalidate.ts).
@@ -50,6 +54,7 @@ export async function AktuellTeaser({ titel, zeigen }: AktuellBlock) {
   const bulletin = bulletins.docs[0]
   const galerie = galerien.docs[0]
   const galerieBild = galerie ? bildUrl(alsDokument<Media>(galerie.bilder?.[0]), 'thumb') : null
+  const Kopf = kopfUnter(titel)
 
   return (
     <section>
@@ -58,7 +63,7 @@ export async function AktuellTeaser({ titel, zeigen }: AktuellBlock) {
         {bulletin && (
           <article className="karte">
             <p className="marke">Neustes Bulletin</p>
-            <h3>{bulletin.titel}</h3>
+            <Kopf>{bulletin.titel}</Kopf>
             <Download
               datei={bulletin}
               titel="Herunterladen"
@@ -70,7 +75,7 @@ export async function AktuellTeaser({ titel, zeigen }: AktuellBlock) {
         {protokoll && (
           <article className="karte">
             <p className="marke">Letzte Sitzung</p>
-            <h3>{protokoll.titel}</h3>
+            <Kopf>{protokoll.titel}</Kopf>
             <Download
               datei={protokoll}
               titel="Herunterladen"
@@ -82,7 +87,7 @@ export async function AktuellTeaser({ titel, zeigen }: AktuellBlock) {
         {galerie && (
           <article className="karte">
             <p className="marke">Fotos</p>
-            <h3>{galerie.titel}</h3>
+            <Kopf>{galerie.titel}</Kopf>
             {galerieBild && (
               <ViewTransition name={`galerie-${galerie.slug}`} share="morph" default="none">
                 <img className="karte-bild" src={galerieBild} alt="" loading="lazy" />
@@ -103,20 +108,21 @@ export async function ListeTeaser(block: ListeBlock) {
   const anzahl = block.anzahl || undefined
   const karten = darstellung !== 'liste' && darstellung !== 'schuljahr'
   const ziel = ueberall[quelle]
+  const kopf = kopfUnter(titel)
 
   return (
     <section>
       {titel && <h2>{titel}</h2>}
       {quelle === 'arbeitsgruppen' ? (
-        <AgListe block={block} anzahl={anzahl} karten={karten} />
+        <AgListe block={block} anzahl={anzahl} karten={karten} kopf={kopf} />
       ) : quelle === 'galerien' ? (
-        <GalerieListe anzahl={anzahl} karten={karten} />
+        <GalerieListe anzahl={anzahl} karten={karten} kopf={kopf} />
       ) : (
         <DateiListe
           quelle={quelle}
           anzahl={anzahl}
           darstellung={darstellung ?? 'karten'}
-          unterTitel={Boolean(titel)}
+          kopf={kopf}
         />
       )}
       {linkAlle && (
@@ -134,13 +140,12 @@ async function DateiListe({
   quelle,
   anzahl,
   darstellung,
-  unterTitel,
+  kopf: Kopf,
 }: {
   quelle: 'protokolle' | 'bulletins'
   anzahl?: number
   darstellung: Darstellung
-  /** Der Block hat eine eigene Überschrift; die Schuljahre werden dann eine Stufe tiefer gesetzt. */
-  unterTitel: boolean
+  kopf: Kopf
 }) {
   const payload = await payloadClient()
   const { docs } = await payload.find({
@@ -152,7 +157,6 @@ async function DateiListe({
   const zusatz = (d: (typeof docs)[number]) =>
     datum(d.datum, quelle === 'bulletins' ? 'monat' : 'lang')
   if (darstellung === 'schuljahr') {
-    const Kopf = unterTitel ? 'h3' : 'h2'
     return (
       <div className="schmal">
         {nachSchuljahr(docs).map(([schuljahr, eintraege]) => (
@@ -186,7 +190,7 @@ async function DateiListe({
       {docs.map((d) => (
         <article className="karte" key={d.id}>
           <p className="marke">{zusatz(d)}</p>
-          <h3>{d.titel}</h3>
+          <Kopf>{d.titel}</Kopf>
           <Download datei={d} titel="Herunterladen" />
         </article>
       ))}
@@ -194,7 +198,15 @@ async function DateiListe({
   )
 }
 
-async function GalerieListe({ anzahl, karten }: { anzahl?: number; karten: boolean }) {
+async function GalerieListe({
+  anzahl,
+  karten,
+  kopf: Kopf,
+}: {
+  anzahl?: number
+  karten: boolean
+  kopf: Kopf
+}) {
   const payload = await payloadClient()
   const { docs } = await payload.find({
     collection: 'galerien',
@@ -232,7 +244,7 @@ async function GalerieListe({ anzahl, karten }: { anzahl?: number; karten: boole
                 <img className="karte-bild" src={titelbild} alt="" loading="lazy" />
               </ViewTransition>
             )}
-            <h3>{g.titel}</h3>
+            <Kopf>{g.titel}</Kopf>
             <p className="marke">
               {datum(g.datum, 'monat')} · {g.bilder?.length ?? 0} Bilder
             </p>
@@ -247,10 +259,12 @@ async function AgListe({
   block,
   anzahl,
   karten,
+  kopf: Kopf,
 }: {
   block: ListeBlock
   anzahl?: number
   karten: boolean
+  kopf: Kopf
 }) {
   const payload = await payloadClient()
   const gewaehlt = (block.arbeitsgruppen ?? []).map((a) => (typeof a === 'object' ? a.id : a))
@@ -279,7 +293,7 @@ async function AgListe({
       {docs.map((ag) => (
         <article className="karte" key={ag.id}>
           {ag.ruhend && <p className="marke">Zurzeit ruhend</p>}
-          <h3>{ag.name}</h3>
+          <Kopf>{ag.name}</Kopf>
           <Text inhalt={ag.beschreibung} />
           <Link href={href(ag)} transitionTypes={['vor']}>
             Mehr erfahren
@@ -322,7 +336,7 @@ export async function ArchivTeaser({
       anzahl: `${galerien.totalDocs} Galerien`,
     },
   ]
-  const Kopf = titel ? 'h3' : 'h2'
+  const Kopf = kopfUnter(titel)
   return (
     <section>
       {titel && <h2>{titel}</h2>}
