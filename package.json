@@ -13,7 +13,7 @@
     "start": "cross-env NODE_OPTIONS=--no-deprecation next start",
     "typecheck": "tsc --noEmit",
     "import:legacy": "cross-env NODE_OPTIONS=--no-deprecation payload run scripts/import-legacy.ts --",
-    "bloecke:startseite": "cross-env NODE_OPTIONS=--no-deprecation payload run scripts/startseite-zu-bloecken.ts --",
+    "bloecke:ueberfuehren": "cross-env NODE_OPTIONS=--no-deprecation payload run scripts/bloecke-ueberfuehren.ts --",
     "db:kopie": "bash scripts/db-kopie.sh",
     "migrate": "cross-env NODE_OPTIONS=--no-deprecation PAYLOAD_MIGRATING=true payload run scripts/migrate.ts --"
   },

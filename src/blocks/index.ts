@@ -109,7 +109,13 @@ export const BildText: Block = {
         },
       ],
     },
-    { name: 'legende', type: 'text', label: 'Bildlegende' },
+    {
+      type: 'row',
+      fields: [
+        { name: 'legende', type: 'text', label: 'Bildlegende' },
+        { name: 'gross', type: 'checkbox', label: 'Grössere Schrift (Einleitung)' },
+      ],
+    },
   ],
 }
 
@@ -303,6 +309,46 @@ export const ArchivUebersicht: Block = {
   fields: [titel],
 }
 
+export const Hinweis: Block = {
+  slug: 'hinweis',
+  interfaceName: 'HinweisBlock',
+  labels: { singular: 'Hinweis (farbige Box)', plural: 'Hinweise' },
+  fields: [{ name: 'text', type: 'richText', label: 'Text', required: true }],
+}
+
+/* ── Blöcke mit festem Inhalt aus Globals und Collections ───────────────── */
+
+export const Personen: Block = {
+  slug: 'personen',
+  interfaceName: 'PersonenBlock',
+  labels: { singular: 'Vorstand und Delegierte', plural: 'Vorstand und Delegierte' },
+  // Die Personen selbst werden im Global «Elternrat» gepflegt.
+  fields: [
+    {
+      ...titel,
+      defaultValue: 'Wer im Schuljahr {schuljahr} dabei ist',
+      admin: {
+        description: '{schuljahr} wird durch das Schuljahr aus dem Global «Elternrat» ersetzt.',
+      },
+    },
+  ],
+}
+
+export const AlleArbeitsgruppen: Block = {
+  slug: 'arbeitsgruppen',
+  interfaceName: 'ArbeitsgruppenBlock',
+  labels: { singular: 'Alle Arbeitsgruppen', plural: 'Alle Arbeitsgruppen' },
+  // Alle Arbeitsgruppen mit Beschreibung und Beteiligten, auch ruhende. Ziel der Links /arbeitsgruppen#slug.
+  fields: [titel],
+}
+
+export const ElternboxFormular: Block = {
+  slug: 'elternbox',
+  interfaceName: 'ElternboxBlock',
+  labels: { singular: 'Elternbox-Formular', plural: 'Elternbox-Formulare' },
+  fields: [titel],
+}
+
 export const alleBloecke: Block[] = [
   Buehne,
   TextBlock,
@@ -314,6 +360,10 @@ export const alleBloecke: Block[] = [
   Aktuell,
   Liste,
   ArchivUebersicht,
+  Hinweis,
+  Personen,
+  AlleArbeitsgruppen,
+  ElternboxFormular,
 ]
 
 /** Blockfeld für Seiten und Globals. */

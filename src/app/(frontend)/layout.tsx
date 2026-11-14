@@ -16,24 +16,39 @@ export const metadata: Metadata = {
     'Der Elternrat der Tagesschule Nordstrasse in Zürich Wipkingen: Arbeitsgruppen, Protokolle, Bulletins und die Elternbox für Ihre Anliegen.',
 }
 
-const feste = [
-  { href: '/elternrat', label: 'Elternrat' },
-  { href: '/arbeitsgruppen', label: 'Arbeitsgruppen' },
-  { href: '/archiv', label: 'Archiv' },
-]
-
-/** Feste Seiten zuerst, dann die frei gebauten Seiten mit «In der Navigation zeigen». */
+/** Navigation aus den Seiten mit «In der Navigation zeigen»; fehlende Standardseiten mit ihrer Vorlage. */
 async function ladeNavigation() {
   const payload = await payloadClient()
   const { docs } = await payload.find({
     collection: 'seiten',
-    where: { inNavigation: { equals: true } },
-    sort: 'reihenfolge',
-    limit: 10,
+    limit: 200,
     depth: 0,
-    select: { titel: true, slug: true },
+    select: {
+      titel: true,
+      navigationsTitel: true,
+      slug: true,
+      inNavigation: true,
+      reihenfolge: true,
+    },
   })
-  return [...feste, ...docs.map((d) => ({ href: `/${d.slug}`, label: d.titel }))]
+  const vorhanden = new Set(docs.map((d) => d.slug))
+  const vorlagen = [
+    { slug: 'elternrat', label: 'Elternrat', reihenfolge: 10 },
+    { slug: 'arbeitsgruppen', label: 'Arbeitsgruppen', reihenfolge: 20 },
+    { slug: 'archiv', label: 'Archiv', reihenfolge: 30 },
+  ].filter((v) => !vorhanden.has(v.slug))
+  return [
+    ...vorlagen,
+    ...docs
+      .filter((d) => d.inNavigation && d.slug)
+      .map((d) => ({
+        slug: d.slug!,
+        label: d.navigationsTitel || d.titel,
+        reihenfolge: d.reihenfolge ?? 100,
+      })),
+  ]
+    .sort((a, b) => a.reihenfolge - b.reihenfolge)
+    .map((n) => ({ href: `/${n.slug}`, label: n.label }))
 }
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {

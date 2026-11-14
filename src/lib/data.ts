@@ -7,7 +7,9 @@ import type { Arbeitsgruppen, Dokumente, Media } from '@/payload-types'
 export const payloadClient = cache(async () => getPayload({ config }))
 
 /** Beziehungsfelder kommen je nach Tiefe als ID oder als Dokument zurück. */
-export function alsDokument<T extends { id: number }>(wert: number | T | null | undefined): T | null {
+export function alsDokument<T extends { id: number }>(
+  wert: number | T | null | undefined,
+): T | null {
   return wert && typeof wert === 'object' ? wert : null
 }
 
@@ -23,13 +25,17 @@ export function bildUrl(bild: Media | null, groesse?: 'thumb' | 'mittel'): strin
 export const datum = (wert: string, stil: 'lang' | 'monat' = 'lang'): string =>
   new Intl.DateTimeFormat('de-CH', {
     timeZone: 'Europe/Zurich',
-    ...(stil === 'lang' ? { day: 'numeric', month: 'long', year: 'numeric' } : { month: 'long', year: 'numeric' }),
+    ...(stil === 'lang'
+      ? { day: 'numeric', month: 'long', year: 'numeric' }
+      : { month: 'long', year: 'numeric' }),
   }).format(new Date(wert))
 
 export function dateigroesse(datei: Pick<Dokumente, 'filesize'>): string {
   const bytes = datei.filesize ?? 0
   if (!bytes) return 'PDF'
-  return bytes > 1e6 ? `PDF, ${(bytes / 1e6).toFixed(1)} MB` : `PDF, ${Math.max(1, Math.round(bytes / 1e3))} KB`
+  return bytes > 1e6
+    ? `PDF, ${(bytes / 1e6).toFixed(1)} MB`
+    : `PDF, ${Math.max(1, Math.round(bytes / 1e3))} KB`
 }
 
 /** Gruppiert nach Schuljahr, neuestes zuerst; die Reihenfolge innerhalb bleibt erhalten. */

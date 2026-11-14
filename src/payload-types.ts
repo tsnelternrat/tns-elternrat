@@ -180,10 +180,18 @@ export interface Seiten {
         | AktuellBlock
         | ListeBlock
         | ArchivBlock
+        | HinweisBlock
+        | PersonenBlock
+        | ArbeitsgruppenBlock
+        | ElternboxBlock
       )[]
     | null;
   beschreibung?: string | null;
   inNavigation?: boolean | null;
+  /**
+   * Leer lassen, dann wird der Titel verwendet.
+   */
+  navigationsTitel?: string | null;
   /**
    * In der Navigation erscheinen kleinere Zahlen zuerst.
    */
@@ -324,6 +332,7 @@ export interface BildTextBlock {
   bild: number | Media;
   bildPosition?: ('rechts' | 'links') | null;
   legende?: string | null;
+  gross?: boolean | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'bildText';
@@ -532,6 +541,63 @@ export interface ArchivBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'archiv';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HinweisBlock".
+ */
+export interface HinweisBlock {
+  text: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'hinweis';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PersonenBlock".
+ */
+export interface PersonenBlock {
+  /**
+   * {schuljahr} wird durch das Schuljahr aus dem Global «Elternrat» ersetzt.
+   */
+  titel?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'personen';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ArbeitsgruppenBlock".
+ */
+export interface ArbeitsgruppenBlock {
+  titel?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'arbeitsgruppen';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ElternboxBlock".
+ */
+export interface ElternboxBlock {
+  titel?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'elternbox';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -755,9 +821,14 @@ export interface SeitenSelect<T extends boolean = true> {
         aktuell?: T | AktuellBlockSelect<T>;
         liste?: T | ListeBlockSelect<T>;
         archiv?: T | ArchivBlockSelect<T>;
+        hinweis?: T | HinweisBlockSelect<T>;
+        personen?: T | PersonenBlockSelect<T>;
+        arbeitsgruppen?: T | ArbeitsgruppenBlockSelect<T>;
+        elternbox?: T | ElternboxBlockSelect<T>;
       };
   beschreibung?: T;
   inNavigation?: T;
+  navigationsTitel?: T;
   reihenfolge?: T;
   slug?: T;
   updatedAt?: T;
@@ -804,6 +875,7 @@ export interface BildTextBlockSelect<T extends boolean = true> {
   bild?: T;
   bildPosition?: T;
   legende?: T;
+  gross?: T;
   id?: T;
   blockName?: T;
 }
@@ -886,6 +958,42 @@ export interface ListeBlockSelect<T extends boolean = true> {
  * via the `definition` "ArchivBlock_select".
  */
 export interface ArchivBlockSelect<T extends boolean = true> {
+  titel?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HinweisBlock_select".
+ */
+export interface HinweisBlockSelect<T extends boolean = true> {
+  text?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PersonenBlock_select".
+ */
+export interface PersonenBlockSelect<T extends boolean = true> {
+  titel?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ArbeitsgruppenBlock_select".
+ */
+export interface ArbeitsgruppenBlockSelect<T extends boolean = true> {
+  titel?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ElternboxBlock_select".
+ */
+export interface ElternboxBlockSelect<T extends boolean = true> {
   titel?: T;
   id?: T;
   blockName?: T;
@@ -1115,6 +1223,10 @@ export interface Startseite {
         | AktuellBlock
         | ListeBlock
         | ArchivBlock
+        | HinweisBlock
+        | PersonenBlock
+        | ArbeitsgruppenBlock
+        | ElternboxBlock
       )[]
     | null;
   titel: string;
@@ -1201,23 +1313,6 @@ export interface Elternrat {
         id?: string | null;
       }[]
     | null;
-  /**
-   * Blöcke, die unter der Liste der Personen erscheinen.
-   */
-  zusatz?:
-    | (
-        | BuehneBlock
-        | TextBlock
-        | BildTextBlock
-        | KartenBlock
-        | DownloadsBlock
-        | VideoBlock
-        | GalerieBlock
-        | AktuellBlock
-        | ListeBlock
-        | ArchivBlock
-      )[]
-    | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -1227,6 +1322,9 @@ export interface Elternrat {
  */
 export interface Texte {
   id: number;
+  /**
+   * Vorlage, solange unter «Seiten» kein Eintrag für diese Seite besteht.
+   */
   arbeitsgruppenEinleitung?: {
     root: {
       type: string;
@@ -1243,23 +1341,6 @@ export interface Texte {
     [k: string]: unknown;
   } | null;
   /**
-   * Blöcke unter der Liste der Arbeitsgruppen.
-   */
-  arbeitsgruppenZusatz?:
-    | (
-        | BuehneBlock
-        | TextBlock
-        | BildTextBlock
-        | KartenBlock
-        | DownloadsBlock
-        | VideoBlock
-        | GalerieBlock
-        | AktuellBlock
-        | ListeBlock
-        | ArchivBlock
-      )[]
-    | null;
-  /**
    * Steht auf der Archiv-Übersicht und oben auf der Seite «Protokolle».
    */
   protokolleEinleitung?: string | null;
@@ -1272,22 +1353,8 @@ export interface Texte {
    */
   fotosEinleitung?: string | null;
   /**
-   * Blöcke unter den drei Archiv-Karten.
+   * Vorlage, solange unter «Seiten» kein Eintrag für diese Seite besteht.
    */
-  archivZusatz?:
-    | (
-        | BuehneBlock
-        | TextBlock
-        | BildTextBlock
-        | KartenBlock
-        | DownloadsBlock
-        | VideoBlock
-        | GalerieBlock
-        | AktuellBlock
-        | ListeBlock
-        | ArchivBlock
-      )[]
-    | null;
   elternboxEinleitung?: {
     root: {
       type: string;
@@ -1307,23 +1374,6 @@ export interface Texte {
    * An diese Adressen geht eine E-Mail, sobald jemand in die Elternbox schreibt. Mehrere Adressen durch Komma trennen.
    */
   benachrichtigungsEmail?: string | null;
-  /**
-   * Blöcke unter dem Formular.
-   */
-  elternboxZusatz?:
-    | (
-        | BuehneBlock
-        | TextBlock
-        | BildTextBlock
-        | KartenBlock
-        | DownloadsBlock
-        | VideoBlock
-        | GalerieBlock
-        | AktuellBlock
-        | ListeBlock
-        | ArchivBlock
-      )[]
-    | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -1345,6 +1395,10 @@ export interface StartseiteSelect<T extends boolean = true> {
         aktuell?: T | AktuellBlockSelect<T>;
         liste?: T | ListeBlockSelect<T>;
         archiv?: T | ArchivBlockSelect<T>;
+        hinweis?: T | HinweisBlockSelect<T>;
+        personen?: T | PersonenBlockSelect<T>;
+        arbeitsgruppen?: T | ArbeitsgruppenBlockSelect<T>;
+        elternbox?: T | ElternboxBlockSelect<T>;
       };
   titel?: T;
   einleitung?: T;
@@ -1385,20 +1439,6 @@ export interface ElternratSelect<T extends boolean = true> {
         personen?: T;
         id?: T;
       };
-  zusatz?:
-    | T
-    | {
-        buehne?: T | BuehneBlockSelect<T>;
-        text?: T | TextBlockSelect<T>;
-        bildText?: T | BildTextBlockSelect<T>;
-        karten?: T | KartenBlockSelect<T>;
-        downloads?: T | DownloadsBlockSelect<T>;
-        video?: T | VideoBlockSelect<T>;
-        galerie?: T | GalerieBlockSelect<T>;
-        aktuell?: T | AktuellBlockSelect<T>;
-        liste?: T | ListeBlockSelect<T>;
-        archiv?: T | ArchivBlockSelect<T>;
-      };
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
@@ -1409,53 +1449,11 @@ export interface ElternratSelect<T extends boolean = true> {
  */
 export interface TexteSelect<T extends boolean = true> {
   arbeitsgruppenEinleitung?: T;
-  arbeitsgruppenZusatz?:
-    | T
-    | {
-        buehne?: T | BuehneBlockSelect<T>;
-        text?: T | TextBlockSelect<T>;
-        bildText?: T | BildTextBlockSelect<T>;
-        karten?: T | KartenBlockSelect<T>;
-        downloads?: T | DownloadsBlockSelect<T>;
-        video?: T | VideoBlockSelect<T>;
-        galerie?: T | GalerieBlockSelect<T>;
-        aktuell?: T | AktuellBlockSelect<T>;
-        liste?: T | ListeBlockSelect<T>;
-        archiv?: T | ArchivBlockSelect<T>;
-      };
   protokolleEinleitung?: T;
   bulletinsEinleitung?: T;
   fotosEinleitung?: T;
-  archivZusatz?:
-    | T
-    | {
-        buehne?: T | BuehneBlockSelect<T>;
-        text?: T | TextBlockSelect<T>;
-        bildText?: T | BildTextBlockSelect<T>;
-        karten?: T | KartenBlockSelect<T>;
-        downloads?: T | DownloadsBlockSelect<T>;
-        video?: T | VideoBlockSelect<T>;
-        galerie?: T | GalerieBlockSelect<T>;
-        aktuell?: T | AktuellBlockSelect<T>;
-        liste?: T | ListeBlockSelect<T>;
-        archiv?: T | ArchivBlockSelect<T>;
-      };
   elternboxEinleitung?: T;
   benachrichtigungsEmail?: T;
-  elternboxZusatz?:
-    | T
-    | {
-        buehne?: T | BuehneBlockSelect<T>;
-        text?: T | TextBlockSelect<T>;
-        bildText?: T | BildTextBlockSelect<T>;
-        karten?: T | KartenBlockSelect<T>;
-        downloads?: T | DownloadsBlockSelect<T>;
-        video?: T | VideoBlockSelect<T>;
-        galerie?: T | GalerieBlockSelect<T>;
-        aktuell?: T | AktuellBlockSelect<T>;
-        liste?: T | ListeBlockSelect<T>;
-        archiv?: T | ArchivBlockSelect<T>;
-      };
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

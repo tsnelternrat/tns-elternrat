@@ -57,22 +57,24 @@ Beim ersten Aufruf von `/admin` wird das erste Benutzerkonto angelegt.
 | Bereich | Wo gepflegt | Seite |
 |---|---|---|
 | Startseite | Global «Startseite», aus Blöcken | `/` |
-| Freie Seiten | Collection «Seiten», aus Blöcken | `/adresse` |
-| Elternrat, Vorstand, Delegierte | Global «Elternrat» | `/elternrat` |
-| Arbeitsgruppen | Collection «Arbeitsgruppen», Einleitung in «Texte und Einstellungen» | `/arbeitsgruppen` |
+| Elternrat, Arbeitsgruppen, Archiv, Elternbox und weitere Seiten | Collection «Seiten», aus Blöcken | `/adresse` |
+| Vorstand und Delegierte | Global «Elternrat» (Block «Vorstand und Delegierte») | `/elternrat` |
+| Arbeitsgruppen | Collection «Arbeitsgruppen» (Block «Alle Arbeitsgruppen») | `/arbeitsgruppen/...` |
 | Protokolle, Bulletins, Fotogalerien | je eine Collection | `/archiv/...` |
 | Elternbox | Collection «Elternbox» (nur im Admin sichtbar) | `/elternbox` |
 
 ## Blöcke
 
 Seiten werden aus Blöcken gebaut (`src/blocks/index.ts`, Darstellung in `src/components/bloecke/`):
-Bühne, Text, Bild mit Text, Karten, Dokumente, Video, Fotogalerie sowie Teaser, die ihren Inhalt selbst
+Bühne, Text, Bild mit Text, Karten, Dokumente, Video, Fotogalerie, Hinweis; Teaser, die ihren Inhalt selbst
 aus den Collections holen: «Aktuell» (je das Neuste), «Liste aus dem Archiv» (Protokolle, Bulletins, Galerien,
-Arbeitsgruppen) und «Archiv-Übersicht». Die festen Seiten (Elternrat, Arbeitsgruppen, Archiv, Elternbox) haben
-zusätzlich ein Feld «Weitere Inhalte» für Blöcke unter dem festen Teil.
+Arbeitsgruppen) und «Archiv-Übersicht»; dazu «Vorstand und Delegierte», «Alle Arbeitsgruppen» und
+«Elternbox-Formular».
 
-`pnpm bloecke:startseite` überführt die bisherige Startseite in Blöcke, `--beispiel` legt `/beispiel` mit allen
-Blocktypen an.
+Elternrat, Arbeitsgruppen, Archiv und Elternbox sind Einträge in «Seiten». Fehlt einer, zeigt die Adresse die
+Vorlage aus `src/lib/standardSeiten.ts` (die frühere feste Seite), ebenso die Startseite ohne Blöcke
+(`src/lib/standardStartseite.ts`). `pnpm bloecke:ueberfuehren` legt die Einträge aus den Vorlagen an,
+`--beispiel` zusätzlich `/beispiel` mit allen Blocktypen.
 Nach jeder Änderung im Admin wird die Website neu gerendert (`src/hooks/revalidate.ts`).
 
 ## Infrastruktur

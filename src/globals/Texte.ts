@@ -1,6 +1,5 @@
 import type { GlobalConfig } from 'payload'
 
-import { inhaltField } from '../blocks'
 import { revalidateGlobal } from '../hooks/revalidate'
 
 /** Zerlegt die Eingabe «a@x.ch, b@y.ch» in einzelne Adressen. */
@@ -27,12 +26,11 @@ export const Texte: GlobalConfig = {
               name: 'arbeitsgruppenEinleitung',
               type: 'richText',
               label: 'Einleitung der Seite «Arbeitsgruppen»',
+              admin: {
+                description:
+                  'Vorlage, solange unter «Seiten» kein Eintrag für diese Seite besteht.',
+              },
             },
-            inhaltField(
-              'arbeitsgruppenZusatz',
-              'Weitere Inhalte',
-              'Blöcke unter der Liste der Arbeitsgruppen.',
-            ),
           ],
         },
         {
@@ -62,7 +60,6 @@ export const Texte: GlobalConfig = {
                 description: 'Steht auf der Archiv-Übersicht und oben auf der Seite «Fotos».',
               },
             },
-            inhaltField('archivZusatz', 'Weitere Inhalte', 'Blöcke unter den drei Archiv-Karten.'),
           ],
         },
         {
@@ -72,6 +69,10 @@ export const Texte: GlobalConfig = {
               name: 'elternboxEinleitung',
               type: 'richText',
               label: 'Einleitung der Elternbox',
+              admin: {
+                description:
+                  'Vorlage, solange unter «Seiten» kein Eintrag für diese Seite besteht.',
+              },
             },
             {
               name: 'benachrichtigungsEmail',
@@ -86,7 +87,6 @@ export const Texte: GlobalConfig = {
                   'An diese Adressen geht eine E-Mail, sobald jemand in die Elternbox schreibt. Mehrere Adressen durch Komma trennen.',
               },
             },
-            inhaltField('elternboxZusatz', 'Weitere Inhalte', 'Blöcke unter dem Formular.'),
           ],
         },
       ],

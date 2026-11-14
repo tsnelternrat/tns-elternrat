@@ -2,7 +2,7 @@ import type { Startseite } from '@/payload-types'
 
 /**
  * Die bisherige feste Startseite, ausgedrückt in Blöcken. Dient als Ersatz, solange im Global
- * «Startseite» noch keine Blöcke stehen, und als Vorlage für scripts/startseite-zu-bloecken.ts.
+ * «Startseite» noch keine Blöcke stehen, und als Vorlage für scripts/bloecke-ueberfuehren.ts.
  */
 export function standardStartseite(
   seite: Pick<Startseite, 'titel' | 'einleitung' | 'bild'>,

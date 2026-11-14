@@ -11,6 +11,7 @@ import type {
   DownloadsBlock,
   GalerieBlock,
   Galerien,
+  HinweisBlock,
   KartenBlock,
   Media,
   Seiten,
@@ -18,6 +19,7 @@ import type {
   VideoBlock,
 } from '@/payload-types'
 
+import { AlleArbeitsgruppen, ElternboxFormular, Personen } from './Feste'
 import { AktuellTeaser, ArchivTeaser, ListeTeaser } from './Teaser'
 
 export type Block = NonNullable<Seiten['inhalt']>[number]
@@ -59,6 +61,14 @@ function EinBlock({ block }: { block: Block }) {
       return <ListeTeaser {...block} />
     case 'archiv':
       return <ArchivTeaser {...block} />
+    case 'hinweis':
+      return <Hinweis {...block} />
+    case 'personen':
+      return <Personen {...block} />
+    case 'arbeitsgruppen':
+      return <AlleArbeitsgruppen {...block} />
+    case 'elternbox':
+      return <ElternboxFormular {...block} />
     default:
       return null
   }
@@ -111,14 +121,14 @@ function TextAbschnitt({ titel, text, breite, gross }: TextBlock) {
   )
 }
 
-function BildText({ titel, text, bild, bildPosition, legende }: BildTextBlock) {
+function BildText({ titel, text, bild, bildPosition, legende, gross }: BildTextBlock) {
   const b = alsDokument<Media>(bild)
   const url = bildUrl(b, 'mittel')
   return (
     <section className={bildPosition === 'links' ? 'spalten spalten-bild-links' : 'spalten'}>
       <div>
         <Ueberschrift titel={titel} />
-        <Text inhalt={text} />
+        <Text inhalt={text} className={gross ? 'gross' : undefined} />
       </div>
       {url && (
         <figure>
@@ -196,5 +206,13 @@ function GalerieAbschnitt({ titel, galerie }: GalerieBlock) {
       <Galerie bilder={bilder} />
       {g.slug && <Link href={`/archiv/fotos/${g.slug}`}>Zur Galerie im Archiv</Link>}
     </section>
+  )
+}
+
+function Hinweis({ text }: HinweisBlock) {
+  return (
+    <div className="hinweis">
+      <Text inhalt={text} />
+    </div>
   )
 }

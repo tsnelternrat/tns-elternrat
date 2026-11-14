@@ -1,6 +1,5 @@
 import type { GlobalConfig } from 'payload'
 
-import { inhaltField } from '../blocks'
 import { revalidateGlobal } from '../hooks/revalidate'
 import { schuljahrField } from '../lib/fields'
 
@@ -18,7 +17,9 @@ export const Elternrat: GlobalConfig = {
       type: 'tabs',
       tabs: [
         {
-          label: 'Über den Elternrat',
+          label: 'Bisherige Seite',
+          description:
+            'Vorlage für die Seite «Elternrat», solange unter «Seiten» kein Eintrag dafür besteht.',
           fields: [
             { name: 'einleitung', type: 'richText', label: 'Einleitung' },
             { name: 'foto', type: 'upload', relationTo: 'media', label: 'Gruppenfoto' },
@@ -121,16 +122,6 @@ export const Elternrat: GlobalConfig = {
                 },
               ],
             },
-          ],
-        },
-        {
-          label: 'Weitere Inhalte',
-          fields: [
-            inhaltField(
-              'zusatz',
-              'Weitere Inhalte',
-              'Blöcke, die unter der Liste der Personen erscheinen.',
-            ),
           ],
         },
       ],

@@ -1,14 +1,18 @@
 /**
- * Überführt die bisherige feste Startseite in Blöcke (Global «Startseite», Feld «Inhalt»).
- * Danach lässt sich die Startseite im Admin frei umbauen.
+ * Überführt die bisherigen festen Seiten in Blöcke: die Startseite (Global «Startseite», Feld «Inhalt»)
+ * und Elternrat, Arbeitsgruppen, Archiv, Elternbox (je ein Eintrag in der Collection «Seiten»).
+ * Danach lassen sie sich im Admin frei umbauen. Was schon Blöcke hat, bleibt unverändert.
  *
- *   pnpm bloecke:startseite              füllt die Blöcke, falls noch keine da sind
- *   pnpm bloecke:startseite --beispiel   legt zusätzlich die Seite /beispiel mit allen Blocktypen an
+ *   pnpm bloecke:ueberfuehren              Startseite und die vier Seiten überführen
+ *   pnpm bloecke:ueberfuehren --beispiel   zusätzlich /beispiel mit allen Blocktypen anlegen
  *
- * Läuft nur gegen die lokale Datenbank, ausser mit --prod.
+ * Läuft nur gegen die lokale Datenbank, ausser mit --prod. Die Website wird dabei nicht neu erzeugt:
+ * in Prod danach neu deployen oder im Admin etwas speichern.
  */
 import { getPayload } from 'payload'
 
+import { absatz } from '../src/lib/lexical'
+import { standardAdressen, standardSeite } from '../src/lib/standardSeiten'
 import { standardStartseite } from '../src/lib/standardStartseite'
 import config from '../src/payload.config'
 
@@ -16,30 +20,6 @@ process.env.PAYLOAD_SKIP_REVALIDATE = 'true'
 
 const args = new Set(process.argv.slice(2))
 const lokal = /@(localhost|127\.0\.0\.1)[:/]/.test(process.env.DATABASE_URL ?? '')
-
-/** Ein Absatz Fliesstext im Lexical-Format. */
-const absatz = (text: string) => ({
-  root: {
-    type: 'root',
-    version: 1,
-    direction: 'ltr' as const,
-    format: '' as const,
-    indent: 0,
-    children: [
-      {
-        type: 'paragraph',
-        version: 1,
-        direction: 'ltr' as const,
-        format: '' as const,
-        indent: 0,
-        textFormat: 0,
-        children: [
-          { type: 'text', version: 1, text, format: 0, style: '', mode: 'normal', detail: 0 },
-        ],
-      },
-    ],
-  },
-})
 
 async function main() {
   if (!lokal && !args.has('--prod')) {
@@ -56,6 +36,24 @@ async function main() {
   } else {
     await payload.updateGlobal({ slug: 'startseite', data: { inhalt: standardStartseite(start) } })
     console.log('Startseite in Blöcke überführt.')
+  }
+
+  const [elternrat, texte] = await Promise.all([
+    payload.findGlobal({ slug: 'elternrat', depth: 0 }),
+    payload.findGlobal({ slug: 'texte', depth: 0 }),
+  ])
+  for (const slug of standardAdressen) {
+    const { totalDocs } = await payload.count({
+      collection: 'seiten',
+      where: { slug: { equals: slug } },
+    })
+    if (totalDocs) {
+      console.log(`Seite /${slug} gibt es schon, bleibt unverändert.`)
+      continue
+    }
+    const vorlage = standardSeite(slug, { elternrat, texte })!
+    await payload.create({ collection: 'seiten', data: vorlage })
+    console.log(`Seite /${slug} aus Blöcken angelegt.`)
   }
 
   if (args.has('--beispiel')) {
