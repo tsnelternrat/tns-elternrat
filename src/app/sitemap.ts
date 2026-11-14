@@ -4,10 +4,7 @@ import { basisUrl } from '@/lib/basisUrl'
 import { hatDetailseite, payloadClient } from '@/lib/data'
 import { standardAdressen } from '@/lib/standardSeiten'
 
-// Liegt ausserhalb der Layouts, die der Admin nach Änderungen erneuert; darum zusätzlich stündlich.
-export const revalidate = 3600
-
-/** Alle öffentlichen Seiten. */
+/** Alle öffentlichen Seiten. Wird nach jeder Änderung im Admin neu erzeugt (src/hooks/revalidate.ts). */
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const payload = await payloadClient()
   const [seiten, arbeitsgruppen, galerien] = await Promise.all([

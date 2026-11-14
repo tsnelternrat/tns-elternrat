@@ -10,6 +10,8 @@ async function revalidateSite(): Promise<void> {
   try {
     const { revalidatePath } = await import('next/cache')
     revalidatePath('/', 'layout')
+    // Die Sitemap liegt ausserhalb der Layouts und wird darum einzeln erneuert.
+    revalidatePath('/sitemap.xml')
   } catch {
     // kein Next.js-Request-Kontext
   }
