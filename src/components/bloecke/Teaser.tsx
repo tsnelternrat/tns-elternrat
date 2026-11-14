@@ -3,8 +3,21 @@ import { ViewTransition } from 'react'
 
 import { Download } from '@/components/Download'
 import { Text } from '@/components/Text'
-import { alsDokument, bildUrl, datum, hatDetailseite, payloadClient } from '@/lib/data'
+import {
+  alsDokument,
+  bildUrl,
+  datum,
+  hatDetailseite,
+  nachSchuljahr,
+  payloadClient,
+} from '@/lib/data'
 import type { AktuellBlock, ArchivBlock, Arbeitsgruppen, ListeBlock, Media } from '@/payload-types'
+
+/** Anzahl aus dem Block; leer heisst alle. */
+const begrenzung = (anzahl?: number) =>
+  anzahl ? { limit: anzahl } : { limit: 0, pagination: false as const }
+
+type Darstellung = NonNullable<ListeBlock['darstellung']>
 
 /**
  * Blöcke, die ihren Inhalt selbst aus den Collections holen und so immer aktuell sind.
@@ -87,8 +100,8 @@ export async function AktuellTeaser({ titel, zeigen }: AktuellBlock) {
 
 export async function ListeTeaser(block: ListeBlock) {
   const { titel, quelle, darstellung, linkAlle } = block
-  const anzahl = block.anzahl ?? 3
-  const karten = darstellung !== 'liste'
+  const anzahl = block.anzahl || undefined
+  const karten = darstellung !== 'liste' && darstellung !== 'schuljahr'
   const ziel = ueberall[quelle]
 
   return (
@@ -99,7 +112,12 @@ export async function ListeTeaser(block: ListeBlock) {
       ) : quelle === 'galerien' ? (
         <GalerieListe anzahl={anzahl} karten={karten} />
       ) : (
-        <DateiListe quelle={quelle} anzahl={anzahl} karten={karten} />
+        <DateiListe
+          quelle={quelle}
+          anzahl={anzahl}
+          darstellung={darstellung ?? 'karten'}
+          unterTitel={Boolean(titel)}
+        />
       )}
       {linkAlle && (
         <p className="mehr">
@@ -115,22 +133,44 @@ export async function ListeTeaser(block: ListeBlock) {
 async function DateiListe({
   quelle,
   anzahl,
-  karten,
+  darstellung,
+  unterTitel,
 }: {
   quelle: 'protokolle' | 'bulletins'
-  anzahl: number
-  karten: boolean
+  anzahl?: number
+  darstellung: Darstellung
+  /** Der Block hat eine eigene Überschrift; die Schuljahre werden dann eine Stufe tiefer gesetzt. */
+  unterTitel: boolean
 }) {
   const payload = await payloadClient()
   const { docs } = await payload.find({
     collection: quelle,
     sort: '-datum',
-    limit: anzahl,
     depth: 0,
+    ...begrenzung(anzahl),
   })
   const zusatz = (d: (typeof docs)[number]) =>
     datum(d.datum, quelle === 'bulletins' ? 'monat' : 'lang')
-  if (!karten) {
+  if (darstellung === 'schuljahr') {
+    const Kopf = unterTitel ? 'h3' : 'h2'
+    return (
+      <div className="schmal">
+        {nachSchuljahr(docs).map(([schuljahr, eintraege]) => (
+          <div key={schuljahr} className="jahrgang">
+            <Kopf>Schuljahr {schuljahr}</Kopf>
+            <ul className="downloads">
+              {eintraege.map((e) => (
+                <li key={e.id}>
+                  <Download datei={e} zusatz={zusatz(e)} />
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    )
+  }
+  if (darstellung === 'liste') {
     return (
       <ul className="downloads schmal">
         {docs.map((d) => (
@@ -154,13 +194,13 @@ async function DateiListe({
   )
 }
 
-async function GalerieListe({ anzahl, karten }: { anzahl: number; karten: boolean }) {
+async function GalerieListe({ anzahl, karten }: { anzahl?: number; karten: boolean }) {
   const payload = await payloadClient()
   const { docs } = await payload.find({
     collection: 'galerien',
     sort: '-datum',
-    limit: anzahl,
     depth: 1,
+    ...begrenzung(anzahl),
   })
   if (!karten) {
     return (
@@ -187,7 +227,11 @@ async function GalerieListe({ anzahl, karten }: { anzahl: number; karten: boolea
             key={g.id}
             transitionTypes={['vor']}
           >
-            {titelbild && <img className="karte-bild" src={titelbild} alt="" loading="lazy" />}
+            {titelbild && (
+              <ViewTransition name={`galerie-${g.slug}`} share="morph" default="none">
+                <img className="karte-bild" src={titelbild} alt="" loading="lazy" />
+              </ViewTransition>
+            )}
             <h3>{g.titel}</h3>
             <p className="marke">
               {datum(g.datum, 'monat')} · {g.bilder?.length ?? 0} Bilder
@@ -205,7 +249,7 @@ async function AgListe({
   karten,
 }: {
   block: ListeBlock
-  anzahl: number
+  anzahl?: number
   karten: boolean
 }) {
   const payload = await payloadClient()
@@ -213,7 +257,7 @@ async function AgListe({
   const { docs } = await payload.find({
     collection: 'arbeitsgruppen',
     sort: 'reihenfolge',
-    limit: gewaehlt.length || anzahl,
+    ...begrenzung(gewaehlt.length || anzahl),
     depth: 0,
     where: gewaehlt.length ? { id: { in: gewaehlt } } : { ruhend: { not_equals: true } },
   })
@@ -246,7 +290,12 @@ async function AgListe({
   )
 }
 
-export async function ArchivTeaser({ titel }: ArchivBlock) {
+export async function ArchivTeaser({
+  titel,
+  protokolleText,
+  bulletinsText,
+  fotosText,
+}: ArchivBlock) {
   const payload = await payloadClient()
   const [texte, protokolle, bulletins, galerien] = await Promise.all([
     payload.findGlobal({ slug: 'texte', depth: 0 }),
@@ -258,19 +307,19 @@ export async function ArchivTeaser({ titel }: ArchivBlock) {
     {
       href: '/archiv/protokolle',
       titel: 'Protokolle',
-      text: texte.protokolleEinleitung,
+      text: protokolleText ?? texte.protokolleEinleitung,
       anzahl: `${protokolle.totalDocs} Protokolle`,
     },
     {
       href: '/archiv/bulletins',
       titel: 'Bulletins',
-      text: texte.bulletinsEinleitung,
+      text: bulletinsText ?? texte.bulletinsEinleitung,
       anzahl: `${bulletins.totalDocs} Ausgaben`,
     },
     {
       href: '/archiv/fotos',
       titel: 'Fotos',
-      text: texte.fotosEinleitung,
+      text: fotosText ?? texte.fotosEinleitung,
       anzahl: `${galerien.totalDocs} Galerien`,
     },
   ]

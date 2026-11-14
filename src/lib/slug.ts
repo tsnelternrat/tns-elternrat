@@ -10,3 +10,7 @@ export function slugify(text: string): string {
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-+|-+$/g, '')
 }
+
+/** Wie slugify, aber «/» bleibt als Trenner erhalten: «Archiv/Protokolle» → «archiv/protokolle». */
+export const slugifyPfad = (text: string): string =>
+  text.split('/').map(slugify).filter(Boolean).join('/')

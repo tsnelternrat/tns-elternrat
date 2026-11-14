@@ -1,7 +1,7 @@
 import type { Field } from 'payload'
 
 import { istSchuljahr, schuljahrVon } from './schuljahr'
-import { slugify } from './slug'
+import { slugify, slugifyPfad } from './slug'
 
 export const schuljahrField: Field = {
   name: 'schuljahr',
@@ -14,8 +14,14 @@ export const schuljahrField: Field = {
   admin: { description: 'Zum Beispiel 2025/26. Danach wird im Archiv gruppiert.' },
 }
 
-/** `pruefen`: zusätzliche Prüfung des fertigen Slugs, gibt true oder eine Fehlermeldung zurück. */
-export const slugField = (quelle: string, pruefen?: (wert: unknown) => true | string): Field => ({
+/**
+ * `pruefen`: zusätzliche Prüfung des fertigen Slugs, gibt true oder eine Fehlermeldung zurück.
+ * `pfad`: «/» ist erlaubt, für Unterseiten wie «archiv/protokolle».
+ */
+export const slugField = (
+  quelle: string,
+  { pruefen, pfad }: { pruefen?: (wert: unknown) => true | string; pfad?: boolean } = {},
+): Field => ({
   name: 'slug',
   type: 'text',
   label: 'Adresse (Slug)',
@@ -24,12 +30,14 @@ export const slugField = (quelle: string, pruefen?: (wert: unknown) => true | st
   ...(pruefen && { validate: pruefen }),
   admin: {
     position: 'sidebar',
-    description: 'Teil der Webadresse. Leer lassen, dann wird er aus dem Titel erzeugt.',
+    description: pfad
+      ? 'Teil der Webadresse, z. B. «elternrat» oder «archiv/protokolle». Leer lassen, dann wird er aus dem Titel erzeugt.'
+      : 'Teil der Webadresse. Leer lassen, dann wird er aus dem Titel erzeugt.',
   },
   hooks: {
     beforeValidate: [
       ({ value, data }) => {
-        if (typeof value === 'string' && value.trim()) return slugify(value)
+        if (typeof value === 'string' && value.trim()) return (pfad ? slugifyPfad : slugify)(value)
         const basis = data?.[quelle]
         return typeof basis === 'string' ? slugify(basis) : value
       },

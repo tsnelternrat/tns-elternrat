@@ -197,7 +197,7 @@ export interface Seiten {
    */
   reihenfolge?: number | null;
   /**
-   * Teil der Webadresse. Leer lassen, dann wird er aus dem Titel erzeugt.
+   * Teil der Webadresse, z. B. «elternrat» oder «archiv/protokolle». Leer lassen, dann wird er aus dem Titel erzeugt.
    */
   slug?: string | null;
   updatedAt: string;
@@ -451,8 +451,14 @@ export interface AktuellBlock {
 export interface ListeBlock {
   titel?: string | null;
   quelle: 'protokolle' | 'bulletins' | 'galerien' | 'arbeitsgruppen';
+  /**
+   * Leer lassen für alle.
+   */
   anzahl?: number | null;
-  darstellung?: ('karten' | 'liste') | null;
+  /**
+   * «Nach Schuljahr» gilt für Protokolle und Bulletins.
+   */
+  darstellung?: ('karten' | 'liste' | 'schuljahr') | null;
   /**
    * Leer lassen für alle aktiven Arbeitsgruppen.
    */
@@ -538,6 +544,9 @@ export interface Arbeitsgruppen {
  */
 export interface ArchivBlock {
   titel?: string | null;
+  protokolleText?: string | null;
+  bulletinsText?: string | null;
+  fotosText?: string | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'archiv';
@@ -959,6 +968,9 @@ export interface ListeBlockSelect<T extends boolean = true> {
  */
 export interface ArchivBlockSelect<T extends boolean = true> {
   titel?: T;
+  protokolleText?: T;
+  bulletinsText?: T;
+  fotosText?: T;
   id?: T;
   blockName?: T;
 }

@@ -55,3 +55,4 @@ node_modules/
 legacy-site/media/
 legacy-site/raw/html/
 __pycache__/
+/backups/

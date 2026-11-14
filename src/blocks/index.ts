@@ -266,8 +266,7 @@ export const Liste: Block = {
           label: 'Wie viele',
           defaultValue: 3,
           min: 1,
-          max: 24,
-          admin: { width: '20%' },
+          admin: { width: '20%', description: 'Leer lassen für alle.' },
         },
         {
           name: 'darstellung',
@@ -277,7 +276,9 @@ export const Liste: Block = {
           options: [
             { label: 'Karten', value: 'karten' },
             { label: 'Liste', value: 'liste' },
+            { label: 'Liste nach Schuljahr', value: 'schuljahr' },
           ],
+          admin: { description: '«Nach Schuljahr» gilt für Protokolle und Bulletins.' },
         },
       ],
     },
@@ -305,8 +306,13 @@ export const ArchivUebersicht: Block = {
   slug: 'archiv',
   interfaceName: 'ArchivBlock',
   labels: { singular: 'Archiv-Übersicht', plural: 'Archiv-Übersichten' },
-  // Drei Karten zu Protokollen, Bulletins und Fotos mit Anzahl und Kurztext aus «Texte und Einstellungen».
-  fields: [titel],
+  // Drei Karten zu Protokollen, Bulletins und Fotos mit Anzahl und je einem Kurztext.
+  fields: [
+    titel,
+    { name: 'protokolleText', type: 'textarea', label: 'Kurztext Protokolle' },
+    { name: 'bulletinsText', type: 'textarea', label: 'Kurztext Bulletins' },
+    { name: 'fotosText', type: 'textarea', label: 'Kurztext Fotos' },
+  ],
 }
 
 export const Hinweis: Block = {

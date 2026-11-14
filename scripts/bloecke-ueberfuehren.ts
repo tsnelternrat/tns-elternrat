@@ -38,10 +38,6 @@ async function main() {
     console.log('Startseite in Blöcke überführt.')
   }
 
-  const [elternrat, texte] = await Promise.all([
-    payload.findGlobal({ slug: 'elternrat', depth: 0 }),
-    payload.findGlobal({ slug: 'texte', depth: 0 }),
-  ])
   for (const slug of standardAdressen) {
     const { totalDocs } = await payload.count({
       collection: 'seiten',
@@ -51,9 +47,42 @@ async function main() {
       console.log(`Seite /${slug} gibt es schon, bleibt unverändert.`)
       continue
     }
-    const vorlage = standardSeite(slug, { elternrat, texte })!
+    const vorlage = standardSeite(slug)!
     await payload.create({ collection: 'seiten', data: vorlage })
     console.log(`Seite /${slug} aus Blöcken angelegt.`)
+  }
+
+  // Archiv-Übersicht: Kurztexte aus «Texte und Einstellungen» in den Block übernehmen (einmalig, Nov. 2026).
+  const texte = (await payload.findGlobal({ slug: 'texte', depth: 0 })) as unknown as Record<
+    string,
+    unknown
+  >
+  const { docs: archiv } = await payload.find({
+    collection: 'seiten',
+    where: { slug: { equals: 'archiv' } },
+    depth: 0,
+  })
+  for (const seite of archiv) {
+    let geaendert = false
+    const inhalt = (seite.inhalt ?? []).map((block) => {
+      if (block.blockType !== 'archiv') return block
+      const neu = { ...block }
+      for (const [feld, alt] of [
+        ['protokolleText', 'protokolleEinleitung'],
+        ['bulletinsText', 'bulletinsEinleitung'],
+        ['fotosText', 'fotosEinleitung'],
+      ] as const) {
+        if (!neu[feld] && typeof texte[alt] === 'string') {
+          neu[feld] = texte[alt] as string
+          geaendert = true
+        }
+      }
+      return neu
+    })
+    if (geaendert) {
+      await payload.update({ collection: 'seiten', id: seite.id, data: { inhalt } })
+      console.log('Kurztexte in die Archiv-Übersicht übernommen.')
+    }
   }
 
   if (args.has('--beispiel')) {

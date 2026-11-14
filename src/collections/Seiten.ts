@@ -65,11 +65,11 @@ export const Seiten: CollectionConfig = {
         description: 'In der Navigation erscheinen kleinere Zahlen zuerst.',
       },
     },
-    slugField(
-      'titel',
-      (wert) =>
-        !vergebeneAdressen.includes(String(wert)) ||
+    slugField('titel', {
+      pfad: true,
+      pruefen: (wert) =>
+        !vergebeneAdressen.includes(String(wert).split('/')[0]) ||
         `«${wert}» ist vom System belegt. Bitte eine andere Adresse wählen.`,
-    ),
+    }),
   ],
 }
