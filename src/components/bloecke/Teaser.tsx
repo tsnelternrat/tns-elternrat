@@ -54,7 +54,7 @@ export async function AktuellTeaser({ titel, zeigen }: AktuellBlock) {
   const bulletin = bulletins.docs[0]
   const galerie = galerien.docs[0]
   const galerieBild = galerie ? bildUrl(alsDokument<Media>(galerie.bilder?.[0]), 'thumb') : null
-  const Kopf = kopfUnter(titel)
+  const Kopf: Kopf = titel ? 'h3' : 'h2'
 
   return (
     <section>
@@ -336,7 +336,7 @@ export async function ArchivTeaser({
       anzahl: `${galerien.totalDocs} Galerien`,
     },
   ]
-  const Kopf = kopfUnter(titel)
+  const Kopf: Kopf = titel ? 'h3' : 'h2'
   return (
     <section>
       {titel && <h2>{titel}</h2>}
