@@ -153,7 +153,8 @@ a:hover {
   flex-wrap: wrap;
   align-items: center;
   gap: 0.5rem 1.5rem;
-  padding-block: 0.75rem;
+  /* Unten mehr Platz für den Zipfel der Sprechblase, der unter die Zeile ragt (siehe .kopf-logo) */
+  padding-block: 1.1rem 1.9rem;
 }
 
 .kopf nav {
@@ -161,12 +162,18 @@ a:hover {
 }
 
 .kopf-logo {
+  --logo-breite: 10.5rem;
   display: block;
   text-decoration: none;
+  /*
+   * Zentriert wird nur der weisse Kasten (viewBox y 4–62 von 104, Mitte 33), wie beim Knopf ohne
+   * Schatten. Schatten und Zipfel (38 von 250 Einheiten Breite) ragen unter die Zeile.
+   */
+  margin-bottom: calc(var(--logo-breite) * -38 / 250);
 }
 
 .logo {
-  width: 10.5rem;
+  width: var(--logo-breite);
   height: auto;
   display: block;
 }
@@ -704,12 +711,13 @@ section > .karten-zwei {
 
   /* Kopf: Logo und Elternbox oben, Menü als eigene Zeile darunter */
   .kopf-innen {
-    padding-block: 0.6rem 0;
-    row-gap: 0.4rem;
+    padding-block: 0.8rem 0;
+    /* Zipfel der Sprechblase hat Platz bis zur Menüzeile */
+    row-gap: 1.5rem;
   }
 
-  .logo {
-    width: 8.5rem;
+  .kopf-logo {
+    --logo-breite: 8.5rem;
   }
 
   .kopf-knopf {
