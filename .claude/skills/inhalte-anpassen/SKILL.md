@@ -26,7 +26,9 @@ Wo was liegt:
    Links als `[Text](url)`.
 3. **Änderungen schreiben:** `scripts/_texte-anpassen.ts` aus `vorlage-anpassen.ts` anlegen und füllen:
    - `neu`: ganze Felder neu schreiben (AG-Beschreibungen), Absätze mit Links über `absatz()` aus `src/lib/lexical.ts`
-   - `ersetzungen`: Ersetzungen in Textknoten; Struktur, Links und Formatierung bleiben dabei erhalten
+   - `ersetzungen`: Ersetzungen in Textknoten; Struktur, Links und Formatierung bleiben dabei erhalten. Gilt auch
+     für die einfachen Textfelder in `textfelder` (z. B. Namen: AG-`beteiligte`, Vorstand, Delegierte im Global
+     `elternrat`). Bei Namen vorher im Dump suchen, wie sie tatsächlich geschrieben sind.
 4. **Lokal ausführen:** `pnpm payload run scripts/_texte-anpassen.ts`. Danach Schritt 2 wiederholen oder den lokalen
    Dump mit grep auf verbliebene alte Formen prüfen.
 5. **Dem User die neuen Texte zeigen und vor Prod fragen.**

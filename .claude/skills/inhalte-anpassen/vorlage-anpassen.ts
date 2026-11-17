@@ -25,11 +25,17 @@ const neu: Record<number, Teil[][]> = {
   // 4: [['Die AG Sommerabend …', { text: 'Elternbox', url: '/elternbox' }, '.']],
 }
 
-/** Ersetzungen in allen Textknoten von Startseite, Seiten und AG-Feldern. */
+/**
+ * Ersetzungen in allen Textknoten von Startseite, Seiten und AG-Feldern sowie in den einfachen Textfeldern
+ * aus `textfelder` (Namen von Delegierten, Vorstand, AG-Beteiligten …).
+ */
 const ersetzungen: [string | RegExp, string][] = [
   // ['alter Satz', 'neuer Satz'],
   // [/(\w)Innen\b/g, '$1*innen'],
 ]
+
+/** Einfache Textfelder (kein Richtext), in denen ebenfalls ersetzt wird. */
+const textfelder = new Set(['personen', 'delegierte', 'rolle', 'klasse', 'beteiligte', 'titel'])
 
 let treffer = 0
 const ersetze = (o: any): any => {
@@ -37,7 +43,7 @@ const ersetze = (o: any): any => {
   if (!o || typeof o !== 'object') return o
   const n: any = {}
   for (const [k, v] of Object.entries(o)) {
-    if (k === 'text' && typeof v === 'string') {
+    if ((k === 'text' || textfelder.has(k)) && typeof v === 'string') {
       let t = v
       for (const [a, b] of ersetzungen) t = t.replace(a as any, b)
       if (t !== v) {
@@ -59,12 +65,20 @@ const geaendert = async (f: () => any, speichern: (d: any) => Promise<unknown>) 
 const payload = await getPayload({ config })
 
 for (const [id, text] of Object.entries(neu)) {
-  await payload.update({ collection: 'arbeitsgruppen', id: Number(id), data: { beschreibung: absaetze(...text) } as any })
+  await payload.update({
+    collection: 'arbeitsgruppen',
+    id: Number(id),
+    data: { beschreibung: absaetze(...text) } as any,
+  })
   console.log(`AG ${id} neu geschrieben`)
 }
 for (const a of (await payload.find({ collection: 'arbeitsgruppen', limit: 100, depth: 0 })).docs)
   await geaendert(
-    () => ({ beschreibung: ersetze(a.beschreibung), details: ersetze(a.details) }),
+    () => ({
+      beschreibung: ersetze(a.beschreibung),
+      details: ersetze(a.details),
+      beteiligte: ersetze({ beteiligte: a.beteiligte }).beteiligte,
+    }),
     (data) => payload.update({ collection: 'arbeitsgruppen', id: a.id, data }),
   )
 const start = await payload.findGlobal({ slug: 'startseite', depth: 0 })
@@ -77,6 +91,15 @@ for (const s of (await payload.find({ collection: 'seiten', limit: 100, depth: 0
     () => ({ inhalt: ersetze(s.inhalt) }),
     (data) => payload.update({ collection: 'seiten', id: s.id, data }),
   )
+const elternrat = await payload.findGlobal({ slug: 'elternrat', depth: 0 })
+await geaendert(
+  () => ({
+    vorstand: ersetze(elternrat.vorstand),
+    klassen: ersetze(elternrat.klassen),
+    weitere: ersetze(elternrat.weitere),
+  }),
+  (data) => payload.updateGlobal({ slug: 'elternrat', data }),
+)
 
 console.log(`${treffer} Textstellen ersetzt`)
 process.exit(0)
