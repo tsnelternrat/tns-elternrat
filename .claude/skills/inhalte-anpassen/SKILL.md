@@ -39,8 +39,8 @@ Wo was liegt:
    ```
    Die IDs stimmen mit Prod überein, weil die lokale DB eine frische Kopie ist (Schritt 1).
 7. **Deployen**, damit die Seiten neu gerendert werden (das Skript setzt `PAYLOAD_SKIP_REVALIDATE`):
-   `vercel deploy --prod`
-8. **Prüfen** mit `vercel curl <deployment-url>/<pfad> | grep …`.
+   `pnpm vc deploy --prod`
+8. **Prüfen** mit `pnpm vc curl <deployment-url>/<pfad> | grep …`.
 9. **Aufräumen:** die `scripts/_*.ts`-Dateien löschen, sie werden nicht committet.
 
 ## Stolpersteine
