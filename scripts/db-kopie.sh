@@ -2,14 +2,14 @@
 # Kopiert die produktive Datenbank in die lokale Docker-Datenbank (docker-compose.yml).
 # Von Prod wird nur gelesen (pg_dump). Die lokale Datenbank wird dabei überschrieben.
 #
-#   vercel env pull .env.prod.local --environment=production   # einmalig
+#   pnpm vc env pull .env.prod.local --environment=production   # einmalig
 #   pnpm db:kopie
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
 QUELLE="${PROD_DATABASE_URL:-$(grep -E '^DATABASE_URL_UNPOOLED=' .env.prod.local 2>/dev/null | cut -d= -f2- | tr -d '"' || true)}"
 if [ -z "$QUELLE" ]; then
-  echo "Keine Quelle: PROD_DATABASE_URL setzen oder .env.prod.local mit vercel env pull anlegen." >&2
+  echo "Keine Quelle: PROD_DATABASE_URL setzen oder .env.prod.local mit pnpm vc env pull anlegen." >&2
   exit 1
 fi
 

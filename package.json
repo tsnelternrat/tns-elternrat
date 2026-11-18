@@ -15,6 +15,7 @@
     "import:legacy": "cross-env NODE_OPTIONS=--no-deprecation payload run scripts/import-legacy.ts --",
     "bloecke:ueberfuehren": "cross-env NODE_OPTIONS=--no-deprecation payload run scripts/bloecke-ueberfuehren.ts --",
     "db:kopie": "bash scripts/db-kopie.sh",
+    "vc": "bash scripts/vercel.sh",
     "migrate": "cross-env NODE_OPTIONS=--no-deprecation PAYLOAD_MIGRATING=true payload run scripts/migrate.ts --",
     "bildgroessen": "cross-env NODE_OPTIONS=--no-deprecation payload run scripts/bildgroessen.ts --"
   },

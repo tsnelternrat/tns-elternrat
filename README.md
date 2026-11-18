@@ -7,14 +7,16 @@ Website des Elternrats, gebaut mit [Payload CMS](https://payloadcms.com) und Nex
 
 ## Lokal entwickeln
 
-Voraussetzungen: Node 24 (`nvm use`), pnpm, Zugriff auf das Vercel-Projekt `tns-elternrat`.
+Voraussetzungen: Node 24 (`nvm use`), pnpm, Zugriff auf das Vercel-Projekt `tns-elternrat`
+im Team «TSN Elternrat» (Konto des Elternrats). Die Vercel-CLI läuft in diesem Repo über `pnpm vc …` mit dem
+Token aus `.env.vercel.local`, unabhängig vom globalen Login (siehe `scripts/vercel.sh`).
 
 Lokal läuft eine eigene Postgres in Docker, getrennt von der produktiven Datenbank:
 
 ```bash
 pnpm install
 docker compose up -d                                          # lokale Datenbank
-vercel env pull .env.prod.local --environment=production      # nur für die Kopie der Prod-Daten
+pnpm vc env pull .env.prod.local --environment=production     # nur für die Kopie der Prod-Daten
 pnpm db:kopie                                                 # Prod-Daten lesend in die lokale DB kopieren
 pnpm dev
 ```
