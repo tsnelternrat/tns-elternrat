@@ -777,7 +777,10 @@ section > .karten-zwei {
     gap: 1.75rem;
   }
 
+  /* Auf schmalen Bildschirmen steht die Beschreibung immer unter dem Titel, nicht je nach Länge daneben. */
   .download {
+    flex-direction: column;
+    align-items: flex-start;
     padding: 0.65rem 0.85rem;
   }
 
