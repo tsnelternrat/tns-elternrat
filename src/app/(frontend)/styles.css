@@ -22,6 +22,8 @@ html {
   font-size: 112.5%;
   -webkit-text-size-adjust: 100%;
   scroll-behavior: smooth;
+  /* Platz für den Scrollbalken immer freihalten, sonst springt das Layout zwischen kurzen und langen Seiten. */
+  scrollbar-gutter: stable;
 }
 
 body {
@@ -777,7 +779,10 @@ section > .karten-zwei {
     gap: 1.75rem;
   }
 
+  /* Auf schmalen Bildschirmen steht die Beschreibung immer unter dem Titel, nicht je nach Länge daneben. */
   .download {
+    flex-direction: column;
+    align-items: flex-start;
     padding: 0.65rem 0.85rem;
   }
 

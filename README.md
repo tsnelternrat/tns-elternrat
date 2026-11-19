@@ -82,10 +82,16 @@ Nach jeder Änderung im Admin wird die Website neu gerendert (`src/hooks/revalid
 
 ## Infrastruktur
 
+Alles liegt im Vercel-Team «TSN Elternrat» (Konto des Elternrats), Region Frankfurt.
+
+- **Domain:** `tsn-elternrat.ch`, registriert und DNS bei Vercel (seit 2026-11-19, vorher cyon).
+  `www.tsn-elternrat.ch` leitet auf `tsn-elternrat.ch` um.
 - **Datenbank:** Neon Postgres (`tsn-elternrat-db`), über den Vercel Marketplace mit dem Projekt verbunden.
 - **Dateien:** Vercel Blob (`tsn-elternrat-media`). Uploads gehen direkt vom Browser in den Store.
 - **E-Mail:** Ist `RESEND_API_KEY` gesetzt, meldet die Elternbox neue Nachrichten per E-Mail an die Adresse
-  aus dem Global «Einstellungen». Ohne Schlüssel landen Nachrichten nur im Admin. Absender: `EMAIL_FROM`.
+  aus dem Global «Einstellungen». Ohne Schlüssel landen Nachrichten nur im Admin. Versand über das Resend-Konto des
+  Elternrats; Absender `elternbox@tsn-elternrat.ch` (änderbar mit `EMAIL_FROM`), die Domain ist bei Resend
+  verifiziert (DNS-Einträge `resend._domainkey`, `send`, `rsend`, `_dmarc` im Vercel-DNS).
 - `NEXT_PUBLIC_SERVER_URL` (z. B. `https://tsn-elternrat.ch`) wird für den Admin-Link in der E-Mail verwendet.
 
 
