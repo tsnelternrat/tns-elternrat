@@ -50,8 +50,7 @@ Wo was liegt:
 - Ein gesetztes `DATABASE_URL` hat Vorrang vor `.env.local`. Ohne lokale DB verweigern die Vorlagen den Lauf, wenn
   `--prod` fehlt.
 - Die Ausgabe enthält «Pulling schema» und SSL-Warnungen, beides kann man ignorieren.
-- Stand 2026-11: `tsn-elternrat.ch` zeigt noch auf die alte WordPress-Seite. Darum die Vercel-Deployment-URL
-  prüfen, nicht die Domain.
+- Nach dem Deploy direkt `https://tsn-elternrat.ch/<pfad>` prüfen (seit 2026-11-19 live auf Vercel).
 
 ## Schreibkonventionen (Rückmeldungen des Elternrats)
 
