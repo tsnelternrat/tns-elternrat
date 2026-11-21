@@ -91,7 +91,9 @@ Alles liegt im Vercel-Team «TSN Elternrat» (Konto des Elternrats), Region Fran
 - **E-Mail:** Ist `RESEND_API_KEY` gesetzt, meldet die Elternbox neue Nachrichten per E-Mail an die Adresse
   aus dem Global «Einstellungen». Ohne Schlüssel landen Nachrichten nur im Admin. Versand über das Resend-Konto des
   Elternrats; Absender `elternbox@tsn-elternrat.ch` (änderbar mit `EMAIL_FROM`), die Domain ist bei Resend
-  verifiziert (DNS-Einträge `resend._domainkey`, `send`, `rsend`, `_dmarc` im Vercel-DNS).
+  verifiziert (DNS-Einträge `resend._domainkey`, `send`, `rsend`, `_dmarc` im Vercel-DNS). Die Domain empfängt
+  keine Mails: ein «Null-MX» (`MX 0 .` auf der Hauptdomain) lässt Mails an `…@tsn-elternrat.ch` sofort
+  zurückkommen statt tagelang zu hängen.
 - `NEXT_PUBLIC_SERVER_URL` (z. B. `https://tsn-elternrat.ch`) wird für den Admin-Link in der E-Mail verwendet.
 
 

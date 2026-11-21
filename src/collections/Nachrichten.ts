@@ -31,11 +31,15 @@ export const Nachrichten: CollectionConfig = {
           const an = adressen(texte.benachrichtigungsEmail)
           if (!an.length || !process.env.RESEND_API_KEY) return doc
           const absender = [doc.name, doc.email].filter(Boolean).join(', ') || 'anonym'
+          // Die Absenderadresse empfängt keine Mails; ohne E-Mail-Angabe ins Leere antworten soll niemand.
+          const antwortHinweis = doc.email
+            ? `«Antworten» geht direkt an ${doc.email}.`
+            : 'Ohne E-Mail-Adresse geschickt – eine Antwort per Mail ist nicht möglich. Diese Absenderadresse empfängt keine Mails.'
           await req.payload.sendEmail({
             to: an,
             replyTo: doc.email || undefined,
             subject: 'Neue Nachricht in der Elternbox',
-            text: `Von: ${absender}\n\n${doc.nachricht}\n\nIm Admin ansehen: ${process.env.NEXT_PUBLIC_SERVER_URL || ''}/admin/collections/nachrichten/${doc.id}`,
+            text: `Von: ${absender}\n\n${doc.nachricht}\n\n---\n${antwortHinweis}\nIm Admin ansehen: ${process.env.NEXT_PUBLIC_SERVER_URL || ''}/admin/collections/nachrichten/${doc.id}`,
           })
         } catch (fehler) {
           // Die Nachricht ist gespeichert; ein fehlgeschlagener Mailversand darf das Formular nicht scheitern lassen.
