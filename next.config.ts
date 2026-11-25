@@ -29,6 +29,8 @@ const alteAdressen: [string, string][] = [
   ['/kontakt', '/elternbox'],
   ['/newsletter', '/'],
   ['/links', '/'],
+  ['/bulletin', '/archiv/bulletins']
+  
 ]
 
 const nextConfig: NextConfig = {
